@@ -1,0 +1,38 @@
+{
+  "name": "create-edu-dapp",
+  "version": "2.1.0",
+  "description": "A starter kit for building (Dapps) on the Open Campus L3 chain, powered by create-edu-chain.",
+  "main": "bin/index.mjs",
+  "scripts": {
+    "preinstall": "npm install chalk inquirer ora",
+    "start": "node bin/index.mjs"
+  },
+  "bin": {
+    "create-edu-dapp": "bin/index.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/asharibali/create-edu-dapp.git"
+  },
+  "keywords": [
+    "evm",
+    "nextjs",
+    "hardhat",
+    "educhain",
+    "opencampus"
+  ],
+  "author": "Asharib Ali",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/asharibali/create-edu-dapp/issues"
+  },
+  "dependencies": {
+    "chalk": "^5.3.0"
+  },
+  "files": [
+    "bin/index.mjs",
+    "CONTRIBUTING.md",
+    "LICENSE.md",
+    "README.md"
+  ]
+}
