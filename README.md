@@ -11,13 +11,13 @@
     <img src="https://img.shields.io/npm/dw/create-edu-dapp?color=teal" alt="Downloads">
 </div><br>
 
-A full-stack starter template featuring **Next & Hardhat or Foundry**, designed for building `Dapps`, as well as developing, deploying, testing, and verifying Solidity smart contracts on the Open Campus L3 chain. This starter kit includes pre-installed packages such as `create-next-app`, `hardhat`, `foundry`, `typescript`, `tailwindcss`, `shadcn-ui`, `web3.js`, and more.
+A full-stack starter template featuring **Nextjs & Hardhat or Foundry**, designed for building `Dapps`, as well as developing, deploying, testing, and verifying Solidity smart contracts on the Open Campus L3 chain. This starter kit includes pre-installed packages such as `create-next-app`, `hardhat`, `foundry`, `typescript`, `tailwindcss`, `shadcn-ui`, `web3.js`, `ocid`, and more.
 
 ## 📺 Quickstart
 
-**You will find the *Next & Hardhat* implementation guide [Here](https://github.com/AsharibAli/create-edu-dapp-hardhat).**
+**You will find the *Nextjs & Hardhat* implementation guide [Here](https://github.com/AsharibAli/create-edu-dapp-hardhat).**
 
-**You will find the *Next & Foundry* implementation guide [Here](https://github.com/AsharibAli/create-edu-dapp-foundry).**
+**You will find the *Nextjs & Foundry* implementation guide [Here](https://github.com/AsharibAli/create-edu-dapp-foundry).**
 
 ### ⌛️ create-edu-dapp Command
 
