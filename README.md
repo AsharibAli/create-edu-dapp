@@ -191,7 +191,28 @@ cd frontend
 npm run dev
 ```
 
-![create-edu-dapp ui](https://raw.githubusercontent.com/AsharibAli/create-edu-dapp/main/frontend/public/create-edu-dapp.png)
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="https://i.ibb.co/Zdb4RKD/create-edu-dapp-before.png" alt="create-edu-dapp-before" width="500"/>
+      <b>(/) create-edu-dapp Before Auth</b>
+    </td>
+    <td align="center">
+      <img src="https://i.ibb.co/Xzd8bqS/create-edu-dapp-after.png" alt="create-edu-dapp-after" width="500"/>
+      <b>(state update) create-edu-dapp After Auth</b>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="https://i.ibb.co/dc5JVgF/connect-with-ocid-before.png" alt="connect-with-ocid-before" width="500"/>
+      <b>(/user) connect-with-ocid Before Auth</b>
+    </td>
+    <td align="center">
+      <img src="https://i.ibb.co/QbK9MNm/connect-with-ocid-after.png" alt="connect-with-ocid-after" width="500"/>
+      <b>(state update) connect-with-ocid After Auth</b>
+    </td>
+  </tr>
+</table>
 
 ## ➡️ Contributing
 
