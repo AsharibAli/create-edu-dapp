@@ -32,13 +32,13 @@ npx create-edu-dapp <your-dapp-name>
 cd <your-dapp-name>
 ```
 
+***Note: If you have used the npx command then you don't have to install manually in any directory.***
+
 # Hardhat Setup
 
 ### 📜 Smart Contracts
 
 All smart contracts are located inside the `backend` aka `hardhat` folder, which can be found in the root directory. To get started, first install the necessary dependencies by running:
-
-*Note: If you have used the npx command then you don't have to install manually in any directory.*
 
 ```sh
 # change directory into the backend folder
@@ -68,7 +68,7 @@ After successful compilation, the artifacts directory will be created in `./src`
 
 ### 🧪 Test
 
-To write tests, go to `./test` directory and create `<your-contracts>.js`, you can test your smart contracts using the following command.
+To write tests, go to `./test` directory and create `<your-contracts>.ts`, you can test your smart contracts using the following command.
 
 ```sh
 # For testing the smart contracts
@@ -216,11 +216,11 @@ npm run dev
 
 ## ➡️ Contributing
 
-We welcome contributions from the community! If you'd like to contribute, please follow the guidelines in our [CONTRIBUTING.md](https://github.com/AsharibAli/create-edu-dapp/blob/main/CONTRIBUTING.md) file.
+We welcome contributions from the community! If you'd like to contribute, please follow the guidelines in our [CONTRIBUTING.md](https://github.com/AsharibAli/create-edu-dapp-hardhat/blob/main/CONTRIBUTING.md) file.
 
 ## ⚖️ License
 
-create-edu-dapp is licensed under the [MIT License](https://github.com/AsharibAli/create-edu-dapp/blob/main/LICENSE.md).
+create-edu-dapp is licensed under the [MIT License](https://github.com/AsharibAli/create-edu-dapp-hardhat/blob/main/LICENSE.md).
 
 <hr>
 Don't forget to star this repository ⭐️ and Follow on X ~ <a href="https://twitter.com/0xAsharib" target="_blank"><img src="https://img.shields.io/twitter/follow/0xAsharib?style=social" alt="twitter" /></a>
