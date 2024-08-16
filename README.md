@@ -79,13 +79,13 @@ npx hardhat test
 
 Before deploying the smart contracts, ensure that you have added the [`Open Campus Codex`](https://open-campus-docs.vercel.app/getting-started) to your MetaMask wallet and that it has sufficient funds. If you do not have testnet $EDU on Open Campus Codex, please follow this [faucets guide](https://open-campus-docs.vercel.app/build/faucet).
 
-Also, make changes in `./scripts/deploy.js` (replace the greeter contract name with `<your-contract-name>`).
+Also, make changes in `./scripts/deploy.ts` (replace the greeter contract name with `<your-contract-name>`).
 
 For deploying the smart contracts to `open campus codex` network, type the following command:
 
 ```sh
 # For deploying the smart contracts
-npx hardhat run scripts/deploy.js --network opencampus
+npx hardhat run scripts/deploy.ts --network opencampus
 ```
 
 ```sh

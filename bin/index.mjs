@@ -116,7 +116,7 @@ const importModule = async (module) => {
       console.log(chalk.cyan("\t npx hardhat compile"));
       console.log(chalk.cyan("\t npx hardhat test"));
       console.log(
-        chalk.cyan("\t npx hardhat run scripts/deploy.js --network opencampus")
+        chalk.cyan("\t npx hardhat run scripts/deploy.ts --network opencampus")
       );
       console.log(
         chalk.cyan(
