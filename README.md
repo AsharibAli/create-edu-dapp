@@ -94,7 +94,7 @@ npx hardhat run scripts/deploy.ts --network opencampus
 
 **Copy and paste the generated contract JSON ABI folder `contracts` inside the `backend/src/contracts` directory to the `/frontend/` directory.**
 
-**Copy and paste the deployed contract address [here](https://github.com/AsharibAli/create-edu-dapp/blob/82f9bed935805202876d1132346fb2130a63cdf0/frontend/app/page.tsx#L42).**
+**Copy and paste the deployed contract address [here](https://github.com/AsharibAli/create-edu-dapp-hardhat/blob/9783589c2d7b66de4457a15f30f9e8e86a39d02a/frontend/app/page.tsx#L53).**
 
 ### ✅ Verify
 
@@ -163,7 +163,7 @@ forge script script/DeployGreeter.s.sol --broadcast --rpc-url https://rpc.open-c
 
 **Copy and paste the generated contract JSON ABI folder `Greeter.sol` inside the `backend/out/` directory to the `/frontend/` directory.**
 
-**Copy and paste the deployed contract address [here](https://github.com/AsharibAli/create-edu-dapp/blob/82f9bed935805202876d1132346fb2130a63cdf0/frontend/app/page.tsx#L42).**
+**Copy and paste the deployed contract address [here](https://github.com/AsharibAli/create-edu-dapp-foundry/blob/ac876d80415530496b498596002e1ed58b2e588c/frontend/app/page.tsx#L53).**
 
 ### ✅ Verify
 
