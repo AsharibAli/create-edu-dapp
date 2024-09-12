@@ -10,15 +10,30 @@
     <img src="https://img.shields.io/npm/v/create-edu-dapp?color=teal" alt="NPM Version">
 </div><br>
 
-A full-stack starter kit featuring **Nextjs & Hardhat or Foundry**, designed for building `Dapps`, as well as developing, deploying, testing, and verifying Solidity smart contracts on the Open Campus L3 chain. This starter kit includes pre-installed packages such as `create-next-app`, `hardhat`, `foundry`, `typescript`, `tailwindcss`, `shadcn-ui`, `web3.js`, `ocid`, and more.
+A full-stack starter template featuring **Next.js & Hardhat or Foundry**, designed for building `dApps`, and for developing, deploying, testing, and verifying Solidity smart contracts on the Open Campus L3 **(EduChain)**. The starter kit comes pre-configured with **six example dApps** and includes essential tools and libraries such as `create-next-app`, `Hardhat`, `Foundry`, `TypeScript`, `Tailwind CSS`, `shadcn-ui`, `web3.js`, `Open Campus ID`, and more.
 
-## 📺 Quickstart
+<table align="center">
+  <tr>
+    <td align="center">
+      <a align="center" href="https://ced.asharib.xyz/">
+  <img src="https://cdn.dorahacks.io/static/files/191743e71ac107ee43506c8424997c17.png" alt="package">
+  <b>create-edu-dapp</b>
+</a>
+  </tr>
+</table>
 
-**You will find the *Nextjs & Hardhat* implementation guide [Here](https://github.com/AsharibAli/create-edu-dapp-hardhat).**
 
-**You will find the *Nextjs & Foundry* implementation guide [Here](https://github.com/AsharibAli/create-edu-dapp-foundry).**
+## 🎉 Achievements
+- **1k+ NPM Downloads**
+- **Appreciated by the Open Campus Team on X**
 
-### ⌛️ create-edu-dapp Command
+## 🚀 Quick Start
+
+Choose your preferred implementation:
+- [Next.js & Hardhat](https://github.com/AsharibAli/create-edu-dapp-hardhat)
+- [Next.js & Foundry](https://github.com/AsharibAli/create-edu-dapp-foundry)
+
+### 📦 Installation
 
 Open up your terminal (or command prompt) and type the following command:
 
@@ -35,7 +50,7 @@ cd <your-dapp-name>
 
 # Hardhat Setup
 
-### 📜 Smart Contracts
+## 📜 Smart Contracts
 
 All smart contracts are located inside the `backend` aka `hardhat` folder, which can be found in the root directory. To get started, first install the necessary dependencies by running:
 
@@ -93,7 +108,7 @@ npx hardhat run scripts/deploy.ts --network opencampus
 
 **Copy and paste the generated contract JSON ABI folder `contracts` inside the `backend/src/contracts` directory to the `/frontend/` directory.**
 
-**Copy and paste the deployed contract address [here](https://github.com/AsharibAli/create-edu-dapp-hardhat/blob/9783589c2d7b66de4457a15f30f9e8e86a39d02a/frontend/app/page.tsx#L53).**
+**Copy and paste the deployed contract address in the frontend page directory. For example, if the deployed contract is `Greeter.sol`, then you have to paste the address in `frontend/app/(dapps)/simple-greeting-dapp/page.tsx`.**
 
 ### ✅ Verify
 
@@ -106,7 +121,7 @@ npx hardhat verify --network opencampus <deployed-contract-address>
 
 # Foundry Setup
 
-### 📜 Smart Contracts
+## 📜 Smart Contracts
 
 All smart contracts are located inside the `backend` aka `foundry` folder, which can be found in the root directory.
 
@@ -160,9 +175,9 @@ forge script script/DeployGreeter.s.sol --broadcast --rpc-url https://rpc.open-c
 <your-contract> deployed to: 0x...
 ```
 
-**Copy and paste the generated contract JSON ABI folder `Greeter.sol` inside the `backend/out/` directory to the `/frontend/` directory.**
+**Copy and paste the generated contract JSON ABI folder `Greeter.sol` inside the `backend/out/` directory to the `/frontend/contracts/` directory.**
 
-**Copy and paste the deployed contract address [here](https://github.com/AsharibAli/create-edu-dapp-foundry/blob/ac876d80415530496b498596002e1ed58b2e588c/frontend/app/page.tsx#L53).**
+**Copy and paste the deployed contract address in the frontend page directory. For example, if the deployed contract is `Greeter.sol`, then you have to paste the address in `frontend/app/(dapps)/simple-greeting-dapp/page.tsx`.**
 
 ### ✅ Verify
 
@@ -175,7 +190,7 @@ forge verify-contract \
   --verifier blockscout \
   --verifier-url 'https://opencampus-codex.blockscout.com/api/' \
   <deployed-contract-address> \
-  src/Greeter.sol:Greeter
+  [contractFile]:[contractName]
 ```
 
 ## Next.js Client
@@ -221,5 +236,4 @@ We welcome contributions from the community! If you'd like to contribute, please
 
 create-edu-dapp is licensed under the [MIT License](https://github.com/AsharibAli/create-edu-dapp-hardhat/blob/main/LICENSE.md).
 
-<hr>
-Don't forget to star this repository ⭐️ and Follow on X ~ <a href="https://twitter.com/0xAsharib" target="_blank"><img src="https://img.shields.io/twitter/follow/0xAsharib?style=social" alt="twitter" /></a>
+### ⭐️ Don't forget to star the repository, and [follow me on X](https://x.com/0xAsharib).
