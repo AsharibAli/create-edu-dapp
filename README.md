@@ -18,7 +18,6 @@ A starter-kit featuring **Next.js & Hardhat or Foundry**, designed for building 
       <a align="center" href="https://ced.asharib.xyz/">
   <img src="https://i.ibb.co/P9M5X1M/create-edu-dapp.png" alt="create-edu-dapp" alt="package">
   <b>create-edu-dapp</b>
-</a>
   </tr>
 </table>
 
