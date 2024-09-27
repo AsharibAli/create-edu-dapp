@@ -1,7 +1,7 @@
 {
   "name": "create-edu-dapp",
-  "version": "2.2.2",
-  "description": "A starter kit for building (Dapps) on the Open Campus L3 chain, powered by create-edu-dapp.",
+  "version": "2.2.3",
+  "description": "A starter kit for building (Dapps) on the Open Campus L3 (EduChain), powered by create-edu-dapp.",
   "main": "bin/index.mjs",
   "scripts": {
     "preinstall": "npm install chalk inquirer ora",

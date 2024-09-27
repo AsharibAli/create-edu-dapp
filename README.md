@@ -10,13 +10,13 @@
     <img src="https://img.shields.io/npm/v/create-edu-dapp?color=teal" alt="NPM Version">
 </div><br>
 
-A full-stack starter template featuring **Next.js & Hardhat or Foundry**, designed for building `dApps`, and for developing, deploying, testing, and verifying Solidity smart contracts on the Open Campus L3 **(EduChain)**. The starter kit comes pre-configured with **six example dApps** and includes essential tools and libraries such as `create-next-app`, `Hardhat`, `Foundry`, `TypeScript`, `Tailwind CSS`, `shadcn-ui`, `web3.js`, `Open Campus ID`, and more.
+A starter-kit featuring **Next.js & Hardhat or Foundry**, designed for building `dApps`, and for developing, deploying, testing, and verifying Solidity smart contracts on the Open Campus L3 **(EduChain)**. The starter kit comes pre-configured with **six example dApps** and includes essential tools and libraries such as `create-next-app`, `Hardhat`, `Foundry`, `TypeScript`, `Tailwind CSS`, `shadcn-ui`, `web3.js`, `Open Campus ID`, and more.
 
 <table align="center">
   <tr>
     <td align="center">
       <a align="center" href="https://ced.asharib.xyz/">
-  <img src="https://cdn.dorahacks.io/static/files/191743e71ac107ee43506c8424997c17.png" alt="package">
+  <img src="https://i.ibb.co/P9M5X1M/create-edu-dapp.png" alt="create-edu-dapp" alt="package">
   <b>create-edu-dapp</b>
 </a>
   </tr>
@@ -26,6 +26,34 @@ A full-stack starter template featuring **Next.js & Hardhat or Foundry**, design
 ## 🎉 Achievements
 - **1k+ NPM Downloads**
 - **Appreciated by the Open Campus Team on X**
+- <details>
+  <summary><strong>View the feedback from the developers and community</strong></summary>
+
+  ![Screenshot 2024-08-28 140215.png](https://cdn.dorahacks.io/static/files/191a29a781eabd89236b0384a4097dc8.png)
+
+  ![Screenshot 2024-08-28 140312.png](https://cdn.dorahacks.io/static/files/191a29aa2a950f4d67f88484a0da5b18.png)
+
+  ![Screenshot 2024-08-28 140614.png](https://cdn.dorahacks.io/static/files/191a29acab55ad096685d304adc850fd.png)
+
+  ![Screenshot 2024-08-28 140650.png](https://cdn.dorahacks.io/static/files/191a29b076a3139c4163fd0435a9b66e.png)
+
+  ![Screenshot 2024-08-28 140740.png](https://cdn.dorahacks.io/static/files/191a29b31d2e3c70309b6324a6dbeae7.png)
+
+  ![Screenshot 2024-08-28 140807.png](https://cdn.dorahacks.io/static/files/191a29b949b498a1731f4d843ee9c9ec.png)
+
+  ![Screenshot 2024-08-28 140859.png](https://cdn.dorahacks.io/static/files/191a29bc1c6cfb7703588204b70a1f1c.png)
+
+  ![Screenshot 2024-08-30 142855.png](https://cdn.dorahacks.io/static/files/191a2a5bee004eee75a1ea34368b43d2.png)
+
+  ![Screenshot 2024-08-30 143056.png](https://cdn.dorahacks.io/static/files/191a2a5e5ed899237c5eabb494893993.png)
+
+  ![Screenshot 2024-08-30 143144.png](https://cdn.dorahacks.io/static/files/191a2a6105808bf58fa863f465ca49fe.png)
+
+  ![Screenshot 2024-08-30 143229.png](https://cdn.dorahacks.io/static/files/191a2a635612b6971ab74864ee2a3229.png)
+
+  ![Screenshot 2024-08-30 143413.png](https://cdn.dorahacks.io/static/files/191a2a65da7b4b63cafaae34d2cb7449.png)
+
+</details>
 
 ## 🚀 Quick Start
 
