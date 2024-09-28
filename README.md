@@ -15,9 +15,12 @@ A starter-kit featuring **Next.js & Hardhat or Foundry**, designed for building 
 <table align="center">
   <tr>
     <td align="center">
-      <a align="center" href="https://ced.asharib.xyz/">
-  <img src="https://i.ibb.co/P9M5X1M/create-edu-dapp.png" alt="create-edu-dapp" alt="package">
-  <b>create-edu-dapp</b>
+      <a href="https://ced.asharib.xyz/">
+        <img src="https://i.ibb.co/rph2Jpf/create-edu-dapp.png" alt="create-edu-dapp">
+        <br>
+        <b align="center">create-edu-dapp</b>
+      </a>
+    </td>
   </tr>
 </table>
 
