@@ -1,54 +1,55 @@
 #!/usr/bin/env node
 
 import { execSync } from "child_process";
+import chalk from "chalk";
+import inquirer from "inquirer";
+import ora from "ora";
+import { promises as fs } from 'fs';
+import path from 'path';
 
-const importModule = async (module) => {
+// Function to run commands with better error handling and output
+const runCommand = (command, description) => {
+  const spinner = ora(description).start();
   try {
-    return await import(module);
-  } catch (error) {
-    console.error(`Error importing module ${module}:`, error);
-    process.exit(1);
-  }
-};
-
-const checkGitInstalled = () => {
-  try {
-    execSync('git --version', { stdio: 'ignore' });
+    execSync(command, { stdio: 'pipe' });
+    spinner.succeed();
     return true;
-  } catch (e) {
-    console.error('Git is not installed. Please install Git and try again.');
+  } catch (error) {
+    spinner.fail();
+    console.error(chalk.red(`Failed to execute ${command}`));
+    console.error(chalk.red(error.stderr.toString()));
     return false;
   }
 };
 
-(async () => {
-  const chalk = (await importModule("chalk")).default;
-  const inquirer = (await importModule("inquirer")).default;
-  const ora = (await importModule("ora")).default;
+// Function to create directory if it doesn't exist
+const createDirectoryIfNotExists = async (dir) => {
+  try {
+    await fs.access(dir);
+  } catch {
+    await fs.mkdir(dir, { recursive: true });
+  }
+};
 
-  const runCommand = (command, description) => {
-    const spinner = ora(description).start();
-    try {
-      execSync(`${command}`, { stdio: "inherit" });
-      spinner.succeed();
-    } catch (e) {
-      spinner.fail();
-      console.error(`Failed to execute ${command}`, e);
-      return false;
+// New function to copy files from root directory
+async function copyRootFiles(sourceDir, targetDir) {
+  const files = await fs.readdir(sourceDir);
+  for (const file of files) {
+    const sourcePath = path.join(sourceDir, file);
+    const targetPath = path.join(targetDir, file);
+    const stats = await fs.stat(sourcePath);
+    if (stats.isFile() && file !== '.git' && file !== '.gitignore') {
+      await fs.copyFile(sourcePath, targetPath);
     }
-    return true;
-  };
+  }
+}
 
+// Main function
+async function main() {
   const repoName = process.argv[2];
   if (!repoName) {
-    console.error(
-      "Please provide a repository name as the second argument like > npx create-edu-dapp my-dapp"
-    );
-    process.exit(-1);
-  }
-
-  if (!checkGitInstalled()) {
-    process.exit(-1);
+    console.error(chalk.red("Please provide a repository name as the second argument like > npx create-edu-dapp my-dapp"));
+    process.exit(1);
   }
 
   const questions = [
@@ -64,108 +65,112 @@ const checkGitInstalled = () => {
       message: "Please select the project type:",
       choices: ["hardhat", "foundry"],
     },
-    {
-      type: "input",
-      name: "authorName",
-      message: "Enter your name (optional):",
-    },
   ];
 
-  inquirer.prompt(questions).then((answers) => {
-    const { frontendFramework, projectType, authorName } = answers;
+  const { frontendFramework, projectType } = await inquirer.prompt(questions);
 
-    let setupCommand;
-    let installFrontendDepsCommand;
-    let installBackendDepsCommand;
+  const repoUrl = "https://github.com/AsharibAli/create-edu-dapp";
+  const frontendFolder = frontendFramework === "React and NextJS" ? "react-nextjs" : "vue-nuxtjs";
+  const backendFolder = projectType === "hardhat" ? "hardhat" : "foundry";
 
-    // Clone the single repository
-    const gitCheckoutCommand = `git clone --depth 1 https://github.com/AsharibAli/create-edu-dapp-new ${repoName}`;
-    if (!runCommand(gitCheckoutCommand, chalk.green("Cloning the repository"))) {
-      process.exit(-1);
+  const tempDir = `${repoName}-temp`;
+  const projectDir = repoName;
+
+  console.log(chalk.blue("\nSetting up your project. This might take a moment..."));
+
+  // Clone repository
+  if (!runCommand(`git clone --depth 1 ${repoUrl} ${tempDir}`, "Cloning repository")) {
+    process.exit(1);
+  }
+
+  // Create project directory
+  await createDirectoryIfNotExists(projectDir);
+
+  // Move required folders
+  await fs.rename(path.join(tempDir, 'frontend', frontendFolder), path.join(projectDir, 'frontend'));
+  await fs.rename(path.join(tempDir, 'backend', backendFolder), path.join(projectDir, 'backend'));
+
+  // Copy files from root directory
+  await copyRootFiles(tempDir, projectDir);
+
+  // Remove temp directory
+  await fs.rm(tempDir, { recursive: true, force: true });
+
+  // Install dependencies
+  if (!runCommand(`cd ${projectDir}/frontend && npm install`, `Installing frontend dependencies`)) {
+    process.exit(1);
+  }
+
+  if (projectType === "hardhat") {
+    if (!runCommand(`cd ${projectDir}/backend && npm install`, `Installing backend dependencies`)) {
+      process.exit(1);
     }
+  }
 
-    // Set up the project based on user choices
-    setupCommand = `cd ${repoName} && bash scripts/setup.sh "${frontendFramework}" "${projectType}"`;
-    if (!runCommand(setupCommand, chalk.green("Setting up the project"))) {
-      process.exit(-1);
-    }
+  console.log(chalk.green("\nSuccess! 🎉"));
+  console.log("\nFollow the Quickstart guide in README.md");
 
-    // Install frontend dependencies
-    installFrontendDepsCommand = `cd ${repoName}/frontend && npm install`;
-    if (!runCommand(installFrontendDepsCommand, chalk.green(`Installing frontend dependencies for ${repoName}`))) {
-      process.exit(-1);
-    }
-
-    // Install backend dependencies
-    installBackendDepsCommand = `cd ${repoName}/backend && ${projectType === "hardhat" ? "npm install" : "forge install"}`;
-    if (!runCommand(installBackendDepsCommand, chalk.green(`Installing backend dependencies for ${repoName}`))) {
-      process.exit(-1);
-    }
-
-    console.log(chalk.yellow("\n-----------------------"));
-    console.log(chalk.green(`\nSuccess! 🎉`));
-    if (authorName) {
-      console.log(
-        chalk.green(`Thank you, ${authorName}, for using create-edu-dapp 🙌`)
-      );
-    }
-    console.log("\nFollow the Quickstart guide in README.md");
-
-    if (projectType === "hardhat") {
-      console.log(
-        chalk.cyan("\nTo set up the backend, run the following commands:")
-      );
-      console.log(chalk.cyan(`cd ${repoName} && cd backend`));
-      console.log(
-        chalk.yellow(
-          "\n⚠️ Please create a .env file in the backend directory and paste your Metamask private key:"
-        )
-      );
-      console.log(chalk.cyan("ACCOUNT_PRIVATE_KEY="), "<YOUR_KEY>");
-      console.log(chalk.cyan("\t npx hardhat compile"));
-      console.log(chalk.cyan("\t npx hardhat test"));
-      console.log(
-        chalk.cyan("\t npx hardhat run scripts/deploy.ts --network opencampus")
-      );
-      console.log(
-        chalk.cyan(
-          "\t npx hardhat verify --network opencampus <deployed-contract-address>"
-        )
-      );
-    } else if (projectType === "foundry") {
-      console.log(
-        chalk.cyan("\nTo set up the backend, run the following commands:")
-      );
-      console.log(chalk.cyan(`cd ${repoName} && cd backend`));
-      console.log(
-        chalk.yellow(
-          "\n⚠️ Please create a .env file in the backend directory and paste your Metamask private key:"
-        )
-      );
-      console.log(chalk.cyan("ACCOUNT_PRIVATE_KEY="), "<YOUR_KEY>");
-      console.log(chalk.cyan("\t forge compile"));
-      console.log(chalk.cyan("\t forge test"));
-      console.log(
-        chalk.cyan(
-          "\t forge script script/DeployGreeter.s.sol --broadcast --rpc-url https://rpc.open-campus-codex.gelato.digital/ --gas-limit 30000000 --with-gas-price 5gwei --skip-simulation"
-        )
-      );
-      console.log(
-        chalk.cyan(
-          "\t forge verify-contract --rpc-url https://rpc.open-campus-codex.gelato.digital --verifier blockscout --verifier-url 'https://opencampus-codex.blockscout.com/api/' <deployed-contract-address> src/Greeter.sol:Greeter"
-        )
-      );
-    }
-
+  if (projectType === "hardhat") {
     console.log(
-      chalk.cyan(
-        "\nTo start the frontend development server, run the following commands:"
+      chalk.cyan("\nTo set up the backend, run the following commands:")
+    );
+    console.log(chalk.cyan(`cd ${repoName} && cd backend`));
+    console.log(
+      chalk.yellow(
+        "\n⚠️ Please create a .env file in the backend directory and paste your Metamask private key:"
       )
     );
-    console.log(chalk.cyan(`cd ${repoName} && cd frontend`));
-    console.log(chalk.cyan("npm run dev"));
+    console.log(chalk.cyan("ACCOUNT_PRIVATE_KEY="), "<YOUR_KEY>");
+    console.log(chalk.cyan("\t npx hardhat compile"));
+    console.log(chalk.cyan("\t npx hardhat test"));
+    console.log(
+      chalk.cyan("\t npx hardhat run scripts/deploy.ts --network opencampus")
+    );
+    console.log(
+      chalk.cyan(
+        "\t npx hardhat verify --network opencampus <deployed-contract-address>"
+      )
+    );
+  } else if (projectType === "foundry") {
+    console.log(
+      chalk.cyan("\nTo set up the backend, run the following commands:")
+    );
+    console.log(chalk.cyan(`cd ${repoName} && cd backend`));
+    console.log(
+      chalk.yellow(
+        "\n⚠️ Please create a .env file in the backend directory and paste your Metamask private key:"
+      )
+    );
+    console.log(chalk.cyan("ACCOUNT_PRIVATE_KEY="), "<YOUR_KEY>");
+    console.log(chalk.cyan("\t forge compile"));
+    console.log(chalk.cyan("\t forge test"));
+    console.log(
+      chalk.cyan(
+        "\t forge script script/DeployGreeter.s.sol --broadcast --rpc-url https://rpc.open-campus-codex.gelato.digital/ --gas-limit 30000000 --with-gas-price 5gwei --skip-simulation"
+      )
+    );
+    console.log(
+      chalk.cyan(
+        "\t forge verify-contract --rpc-url https://rpc.open-campus-codex.gelato.digital --verifier blockscout --verifier-url 'https://opencampus-codex.blockscout.com/api/' <deployed-contract-address> src/Greeter.sol:Greeter"
+      )
+    );
+  }
 
-    console.log("\nHappy Building on Open Campus L3 chain!");
-    console.log(chalk.yellow("\n-----------------------"));
-  });
-})();
+  console.log(
+    chalk.cyan(
+      "\nTo start the frontend development server, run the following commands:"
+    )
+  );
+  console.log(chalk.cyan(`cd ${repoName} && cd frontend`));
+  console.log(chalk.cyan("npm run dev"));
+
+  console.log("\n➡️ Happy Building on the EduChain ⚡");
+  console.log("\n➡️ Let's bring Education on-chain 📚");
+  console.log(chalk.yellow("\n-----------------------"));
+}
+
+main().catch(error => {
+  console.error(chalk.red("An unexpected error occurred:"));
+  console.error(chalk.red(error));
+  process.exit(1);
+});

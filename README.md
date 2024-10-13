@@ -10,7 +10,7 @@
     <img src="https://img.shields.io/npm/v/create-edu-dapp?color=teal" alt="NPM Version">
 </div><br>
 
-A starter-kit featuring **Next.js & Hardhat or Foundry**, designed for building `dApps`, and for developing, deploying, testing, and verifying Solidity smart contracts on the Open Campus L3 **(EduChain)**. The starter kit comes pre-configured with **six example dApps** and includes essential tools and libraries such as `create-next-app`, `Hardhat`, `Foundry`, `TypeScript`, `Tailwind CSS`, `shadcn-ui`, `web3.js`, `Open Campus ID`, and more.
+A starter-kit featuring **React & NextJS and Vue & NuxtJS**, designed for building `dApps`, and for developing, deploying, testing, and verifying Solidity smart contracts on the Open Campus L3 **(EduChain)**. The starter kit comes pre-configured with **six example dApps** and includes essential tools and libraries such as `create-next-app`, `Hardhat`, `Foundry`, `TypeScript`, `Tailwind CSS`, `shadcn-ui`, `web3.js`, `Open Campus ID`, and more.
 
 <table align="center">
   <tr>
@@ -57,8 +57,8 @@ A starter-kit featuring **Next.js & Hardhat or Foundry**, designed for building 
 ## 🚀 Quick Start
 
 Choose your preferred implementation:
-- [Next.js & Hardhat](https://github.com/AsharibAli/create-edu-dapp-hardhat)
-- [Next.js & Foundry](https://github.com/AsharibAli/create-edu-dapp-foundry)
+- **React and NextJS with Hardhat or Foundry**
+- **Vue and NuxtJS with Hardhat or Foundry**
 
 ### 📦 Installation
 
