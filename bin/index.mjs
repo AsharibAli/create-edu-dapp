@@ -2,13 +2,22 @@
 
 import { execSync } from "child_process";
 
-// Use dynamic imports to handle ESM and CommonJS compatibility
 const importModule = async (module) => {
   try {
     return await import(module);
   } catch (error) {
     console.error(`Error importing module ${module}:`, error);
     process.exit(1);
+  }
+};
+
+const checkGitInstalled = () => {
+  try {
+    execSync('git --version', { stdio: 'ignore' });
+    return true;
+  } catch (e) {
+    console.error('Git is not installed. Please install Git and try again.');
+    return false;
   }
 };
 
@@ -38,7 +47,17 @@ const importModule = async (module) => {
     process.exit(-1);
   }
 
+  if (!checkGitInstalled()) {
+    process.exit(-1);
+  }
+
   const questions = [
+    {
+      type: "list",
+      name: "frontendFramework",
+      message: "Please select the frontend framework:",
+      choices: ["React and NextJS", "Vue and NuxtJS"],
+    },
     {
       type: "list",
       name: "projectType",
@@ -53,43 +72,33 @@ const importModule = async (module) => {
   ];
 
   inquirer.prompt(questions).then((answers) => {
-    const { projectType, authorName } = answers;
+    const { frontendFramework, projectType, authorName } = answers;
 
-    let gitCheckoutCommand;
+    let setupCommand;
     let installFrontendDepsCommand;
     let installBackendDepsCommand;
 
-    if (projectType === "hardhat") {
-      gitCheckoutCommand = `git clone --depth 1 https://github.com/AsharibAli/create-edu-dapp-hardhat ${repoName}`;
-      installFrontendDepsCommand = `cd ${repoName} && cd frontend && npm install`;
-      installBackendDepsCommand = `cd ${repoName} && cd backend && npm install`;
-    } else if (projectType === "foundry") {
-      gitCheckoutCommand = `git clone --depth 1 https://github.com/AsharibAli/create-edu-dapp-foundry ${repoName}`;
-      installFrontendDepsCommand = `cd ${repoName} && cd frontend && npm install`;
-      installBackendDepsCommand = `cd ${repoName} && cd backend`;
-    }
-
-    if (
-      !runCommand(gitCheckoutCommand, chalk.green("Cloning the repository"))
-    ) {
+    // Clone the single repository
+    const gitCheckoutCommand = `git clone --depth 1 https://github.com/AsharibAli/create-edu-dapp-new ${repoName}`;
+    if (!runCommand(gitCheckoutCommand, chalk.green("Cloning the repository"))) {
       process.exit(-1);
     }
 
-    if (
-      !runCommand(
-        installFrontendDepsCommand,
-        chalk.green(`Installing frontend dependencies for ${repoName}`)
-      )
-    ) {
+    // Set up the project based on user choices
+    setupCommand = `cd ${repoName} && bash scripts/setup.sh "${frontendFramework}" "${projectType}"`;
+    if (!runCommand(setupCommand, chalk.green("Setting up the project"))) {
       process.exit(-1);
     }
 
-    if (
-      !runCommand(
-        installBackendDepsCommand,
-        chalk.green(`Installing backend dependencies for ${repoName}`)
-      )
-    ) {
+    // Install frontend dependencies
+    installFrontendDepsCommand = `cd ${repoName}/frontend && npm install`;
+    if (!runCommand(installFrontendDepsCommand, chalk.green(`Installing frontend dependencies for ${repoName}`))) {
+      process.exit(-1);
+    }
+
+    // Install backend dependencies
+    installBackendDepsCommand = `cd ${repoName}/backend && ${projectType === "hardhat" ? "npm install" : "forge install"}`;
+    if (!runCommand(installBackendDepsCommand, chalk.green(`Installing backend dependencies for ${repoName}`))) {
       process.exit(-1);
     }
 
