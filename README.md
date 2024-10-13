@@ -15,12 +15,9 @@ A starter-kit featuring **React & NextJS and Vue & NuxtJS**, designed for buildi
 <table align="center">
   <tr>
     <td align="center">
-      <a href="https://ced.asharib.xyz/">
-        <img src="https://i.ibb.co/rph2Jpf/create-edu-dapp.png" alt="create-edu-dapp">
-        <br>
-        <b align="center">create-edu-dapp</b>
-      </a>
-    </td>
+      <a align="center" href="https://ced.asharib.xyz/">
+  <img src="https://i.ibb.co/P9M5X1M/create-edu-dapp.png" alt="create-edu-dapp" alt="package">
+  <b>create-edu-dapp</b>
   </tr>
 </table>
 
