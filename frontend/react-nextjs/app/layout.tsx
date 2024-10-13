@@ -6,9 +6,9 @@ import OCIDProvider from "../components/OCIDProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Create Edu Dapp 🔥 | Nextjs & Hardhat 💻",
+  title: "Create Edu Dapp 🔥 | Starter Kit 💻",
   description:
-    "A starter kit for building decentralized applications (Dapps) on the Open Campus L3 chain, powered by create-edu-dapp.",
+    "A starter kit for building (Dapps) on the Open Campus L3 (EduChain), powered by create-edu-dapp.",
 };
 
 export default function RootLayout({
