@@ -23,7 +23,7 @@ export default defineNuxtConfig({
       ],
     },
   },
-  css: ["~/assets/css/globals.css"],
+  css: ["~/assets/css/tailwind.css"],
   modules: ["@nuxtjs/tailwindcss", "shadcn-nuxt", "@nuxtjs/google-fonts"],
   googleFonts: {
     families: {

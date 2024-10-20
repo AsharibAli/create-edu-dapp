@@ -26,7 +26,7 @@ const Footer = () => {
           ,{" "}
           <a
             className="text-teal-300 no-underline hover:underline hover:text-teal-700"
-            href="https://open-campus-docs.vercel.app/"
+            href="https://devdocs.opencampus.xyz/"
             target="_blank"
             rel="noopener noreferrer"
           >

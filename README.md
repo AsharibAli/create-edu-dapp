@@ -1,12 +1,12 @@
 <p align="center">
-    <img align="center" src="https://www.opencampus.xyz/static/media/coin-logo.39cbd6c42530e57817a5b98ac7621ca7.svg" width="100"></img>
+    <img align="center" src="https://i.ibb.co/TgW7H1h/eduhub.png" width="100"></img>
 </p>
 
-<h1 align="center">create-edu-dapp</h1>
+<h1 align="center">EduKit | create-edu-dapp</h1>
 
 <div align="center">
     <img src="https://img.shields.io/badge/platform-opencampus-teal.svg?style=flat-square" alt="Platform">
-    <img src="https://img.shields.io/github/license/asharibali/create-edu-dapp-hardhat?color=teal&style=flat-square " alt="License">
+    <img src="https://img.shields.io/github/license/asharibali/create-edu-dapp?color=teal&style=flat-square " alt="License">
     <img src="https://img.shields.io/npm/v/create-edu-dapp?color=teal" alt="NPM Version">
 </div><br>
 
@@ -15,12 +15,14 @@ A starter-kit featuring **React & NextJS and Vue & NuxtJS**, designed for buildi
 <table align="center">
   <tr>
     <td align="center">
-      <a align="center" href="https://ced.asharib.xyz/">
-  <img src="https://i.ibb.co/P9M5X1M/create-edu-dapp.png" alt="create-edu-dapp" alt="package">
-  <b>create-edu-dapp</b>
+      <a href="https://kit.eduhub.dev/">
+        <img src="https://i.ibb.co/P9M5X1M/create-edu-dapp.png" alt="create-edu-dapp">
+        <br>
+        <b>EduKit | create-edu-dapp</b>
+      </a>
+    </td>
   </tr>
 </table>
-
 
 ## 🎉 Achievements
 - **1k+ NPM Downloads**
@@ -118,7 +120,7 @@ npx hardhat test
 
 ### ⛓️ Deploy
 
-Before deploying the smart contracts, ensure that you have added the [`Open Campus Codex`](https://open-campus-docs.vercel.app/getting-started) to your MetaMask wallet and that it has sufficient funds. If you do not have testnet $EDU on Open Campus Codex, please follow this [faucets guide](https://open-campus-docs.vercel.app/build/faucet).
+Before deploying the smart contracts, ensure that you have added the [`Open Campus Codex`](https://devdocs.opencampus.xyz/getting-started) to your MetaMask wallet and that it has sufficient funds. If you do not have testnet $EDU on Open Campus Codex, please follow this [faucets guide](https://devdocs.opencampus.xyz/build/faucet).
 
 Also, make changes in `./scripts/deploy.ts` (replace the greeter contract name with `<your-contract-name>`).
 
@@ -187,7 +189,7 @@ forge test
 
 ### ⛓️ Deploy
 
-Before deploying the smart contracts, ensure that you have added the [`Open Campus Codex`](https://open-campus-docs.vercel.app/getting-started) to your MetaMask wallet and that it has sufficient funds. If you do not have testnet $EDU on Open Campus Codex, please follow this [faucets guide](https://open-campus-docs.vercel.app/build/faucet).
+Before deploying the smart contracts, ensure that you have added the [`Open Campus Codex`](https://devdocs.opencampus.xyz/getting-started) to your MetaMask wallet and that it has sufficient funds. If you do not have testnet $EDU on Open Campus Codex, please follow this [faucets guide](https://devdocs.opencampus.xyz/build/faucet).
 
 Also, make changes in `./script/DeployGreeter.s.sol` (replace the deploy greeter contract name with `<your-contract-name>`).
 
@@ -257,10 +259,10 @@ npm run dev
 
 ## ➡️ Contributing
 
-We welcome contributions from the community! If you'd like to contribute, please follow the guidelines in our [CONTRIBUTING.md](https://github.com/AsharibAli/create-edu-dapp-hardhat/blob/main/CONTRIBUTING.md) file.
+We welcome contributions from the community! If you'd like to contribute, please follow the guidelines in our [CONTRIBUTING.md](https://github.com/AsharibAli/create-edu-dapp/blob/main/CONTRIBUTING.md) file.
 
 ## ⚖️ License
 
-create-edu-dapp is licensed under the [MIT License](https://github.com/AsharibAli/create-edu-dapp-hardhat/blob/main/LICENSE.md).
+create-edu-dapp is licensed under the [MIT License](https://github.com/AsharibAli/create-edu-dapp/blob/main/LICENSE.md).
 
 ### ⭐️ Don't forget to star the repository, and [follow me on X](https://x.com/0xAsharib).
