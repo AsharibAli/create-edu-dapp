@@ -17,9 +17,9 @@
           v-for="(dapp, index) in dapps"
           :key="index"
           :to="dapp.route"
-          class="transform transition-transform hover:scale-105"
+          class="transform transition-transform hover:scale-105 cursor-pointer"
         >
-          <Card class="h-full border-2 border-teal-200 hover:border-teal-400 bg-white shadow-lg">
+          <Card class="h-full border-2 border-teal-200 hover:border-teal-400 bg-white shadow-lg" @click.stop>
             <CardHeader>
               <CardTitle class="text-2xl font-bold text-teal-700">{{ dapp.title }}</CardTitle>
               <CardDescription class="text-teal-600">{{ dapp.description }}</CardDescription>

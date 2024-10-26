@@ -1,7 +1,9 @@
 <template>
   <div class="App min-h-screen flex flex-col items-center justify-between">
     <Header />
-    <div class="flex flex-col items-center justify-center flex-grow w-full mt-24 px-4">
+    <div
+      class="flex flex-col items-center justify-center flex-grow w-full mt-24 px-4"
+    >
       <Card class="w-full max-w-2xl p-8 shadow-lg">
         <CardHeader>
           <template v-if="userInfo">
@@ -30,8 +32,14 @@
             <p><strong>Ethereum Address:</strong> {{ userInfo.eth_address }}</p>
             <p><strong>Username:</strong> {{ userInfo.edu_username }}</p>
             <p><strong>Issuer:</strong> {{ userInfo.iss }}</p>
-            <p><strong>Issued At:</strong> {{ new Date(userInfo.iat * 1000).toLocaleString() }}</p>
-            <p><strong>Expiration:</strong> {{ new Date(userInfo.exp * 1000).toLocaleString() }}</p>
+            <p>
+              <strong>Issued At:</strong>
+              {{ new Date(userInfo.iat * 1000).toLocaleString() }}
+            </p>
+            <p>
+              <strong>Expiration:</strong>
+              {{ new Date(userInfo.exp * 1000).toLocaleString() }}
+            </p>
             <p><strong>Audience:</strong> {{ userInfo.aud }}</p>
           </div>
         </CardContent>
@@ -50,18 +58,24 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed } from 'vue'
-import { useRouter } from 'vue-router'
-import { useOCAuth } from "@opencampus/ocid-connect-js"
-import { jwtDecode } from "jwt-decode"
-import Header from '@/components/Header.vue'
-import Footer from '@/components/Footer.vue'
-import LoginButton from '@/components/LoginButton.vue'
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
+import { defineComponent, ref, computed } from "vue";
+import { useRouter } from "vue-router";
+import { useOCAuth } from "@opencampus/ocid-connect-js";
+import { jwtDecode } from "jwt-decode";
+import Header from "@/components/Header.vue";
+import Footer from "@/components/Footer.vue";
+import LoginButton from "@/components/LoginButton.vue";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 export default defineComponent({
-  name: 'UserPage',
+  name: "UserPage",
   components: {
     Header,
     Footer,
@@ -71,29 +85,29 @@ export default defineComponent({
     CardFooter,
     CardHeader,
     CardTitle,
-    Button
+    Button,
   },
   setup() {
-    const router = useRouter()
-    const { authState } = useOCAuth()
+    const router = useRouter();
+    const { authState } = useOCAuth();
 
-    const error = computed(() => authState.value.error)
+    const error = computed(() => authState.value.error);
     const userInfo = computed(() => {
       if (authState.value.idToken) {
-        return jwtDecode(authState.value.idToken)
+        return jwtDecode(authState.value.idToken);
       }
-      return null
-    })
+      return null;
+    });
 
     const goToHome = () => {
-      router.push('/')
-    }
+      router.push("/");
+    };
 
     return {
       error,
       userInfo,
-      goToHome
-    }
-  }
-})
+      goToHome,
+    };
+  },
+});
 </script>
