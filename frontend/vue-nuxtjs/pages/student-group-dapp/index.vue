@@ -84,7 +84,7 @@ import contractABI from '@/contracts/StudyGroup.sol/StudyGroup.json'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { useToast } from "@/components/ui/use-toast"
+import { useToast } from "@/components/ui/toast"
 import Header from "@/components/Header.vue"
 import Footer from "@/components/Footer.vue"
 import LoginButton from "@/components/LoginButton.vue"

@@ -9,7 +9,7 @@
         on the Open Campus L3
         <strong>
           <a
-            href="https://www.opencampus.xyz/"
+            href="https://educhain.xyz/"
             target="_blank"
             rel="noopener noreferrer"
             class="text-teal-300 no-underline hover:underline hover:text-teal-700"
