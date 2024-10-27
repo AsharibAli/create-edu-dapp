@@ -1,47 +1,47 @@
-'use client'
+"use client";
 
-import React, { useState, useEffect } from 'react'
-import Web3 from 'web3'
-import contractABI from '@/contracts/StudyGroup.sol/StudyGroup.json'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { useToast } from '@/components/ui/use-toast'
-import { useOCAuth } from '@opencampus/ocid-connect-js'
-import { jwtDecode } from 'jwt-decode'
-import Header from '@/components/Header'
-import Footer from '@/components/Footer'
-import LoginButton from '@/components/LoginButton'
+import React, { useState, useEffect } from "react";
+import Web3 from "web3";
+import contractABI from "@/contracts/StudyGroup.sol/StudyGroup.json";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useToast } from "@/components/ui/use-toast";
+import { useOCAuth } from "@opencampus/ocid-connect-js";
+import { jwtDecode } from "jwt-decode";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import LoginButton from "@/components/LoginButton";
 
 interface Message {
-  sender: string
-  content: string
-  timestamp: number
+  sender: string;
+  content: string;
+  timestamp: number;
 }
 
 interface DecodedToken {
-  edu_username: string
-  [key: string]: any
+  edu_username: string;
+  [key: string]: any;
 }
 
 // Replace with your deployed contract address
-const contractAddress = '0x158f83cD37e7774b520ADCb9BD7bc80330378c1B' 
+const contractAddress = "0x158f83cD37e7774b520ADCb9BD7bc80330378c1B";
 
 export default function StudyGroup() {
-  const { authState } = useOCAuth()
-  const { toast } = useToast()
+  const { authState } = useOCAuth();
+  const { toast } = useToast();
 
   // State variables
-  const [web3, setWeb3] = useState<Web3 | null>(null)
-  const [contract, setContract] = useState<any>(null)
-  const [account, setAccount] = useState<string>('')
-  const [isMember, setIsMember] = useState<boolean>(false)
-  const [messages, setMessages] = useState<Message[]>([])
-  const [newMessage, setNewMessage] = useState<string>('')
-  const [ocidUsername, setOcidUsername] = useState<string | null>(null)
-  const [mmStatus, setMmStatus] = useState<string>("Not connected!")
-  const [isConnected, setIsConnected] = useState<boolean>(false)
-  const [getNetwork, setGetNetwork] = useState<number | undefined>(undefined)
+  const [web3, setWeb3] = useState<Web3 | null>(null);
+  const [contract, setContract] = useState<any>(null);
+  const [account, setAccount] = useState<string>("");
+  const [isMember, setIsMember] = useState<boolean>(false);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [newMessage, setNewMessage] = useState<string>("");
+  const [ocidUsername, setOcidUsername] = useState<string | null>(null);
+  const [mmStatus, setMmStatus] = useState<string>("Not connected!");
+  const [isConnected, setIsConnected] = useState<boolean>(false);
+  const [getNetwork, setGetNetwork] = useState<number | undefined>(undefined);
 
   // Function to switch network
   const switchToOpenCampusNetwork = async () => {
@@ -66,7 +66,9 @@ export default function StudyGroup() {
                     decimals: 18,
                   },
                   rpcUrls: ["https://rpc.open-campus-codex.gelato.digital"],
-                  blockExplorerUrls: ["https://opencampus-codex.blockscout.com/"],
+                  blockExplorerUrls: [
+                    "https://edu-chain-testnet.blockscout.com/",
+                  ],
                 },
               ],
             });
@@ -74,7 +76,10 @@ export default function StudyGroup() {
             console.error("Failed to add Open Campus Codex network:", addError);
           }
         } else {
-          console.error("Failed to switch to Open Campus Codex network:", switchError);
+          console.error(
+            "Failed to switch to Open Campus Codex network:",
+            switchError
+          );
         }
       }
     }
@@ -89,7 +94,7 @@ export default function StudyGroup() {
         const chainId = await window.ethereum.request({
           method: "eth_chainId",
         });
-        
+
         if (chainId !== "0xa045c") {
           alert("Please connect to the Open Campus Codex network in MetaMask.");
           return;
@@ -113,45 +118,51 @@ export default function StudyGroup() {
   // Effect to initialize Web3, set up contract, and handle network changes
   useEffect(() => {
     if (authState.idToken) {
-      const decodedToken = jwtDecode<DecodedToken>(authState.idToken)
-      setOcidUsername(decodedToken.edu_username)
+      const decodedToken = jwtDecode<DecodedToken>(authState.idToken);
+      setOcidUsername(decodedToken.edu_username);
     }
 
     const initWeb3 = async () => {
-      if (typeof window.ethereum !== 'undefined') {
-        const web3Instance = new Web3(window.ethereum)
-        setWeb3(web3Instance)
+      if (typeof window.ethereum !== "undefined") {
+        const web3Instance = new Web3(window.ethereum);
+        setWeb3(web3Instance);
 
         try {
-          await window.ethereum.request({ method: 'eth_requestAccounts' })
-          const accounts = await web3Instance.eth.getAccounts()
-          setAccount(accounts[0])
+          await window.ethereum.request({ method: "eth_requestAccounts" });
+          const accounts = await web3Instance.eth.getAccounts();
+          setAccount(accounts[0]);
 
-          const contractInstance = new web3Instance.eth.Contract(contractABI.abi, contractAddress)
-          setContract(contractInstance)
+          const contractInstance = new web3Instance.eth.Contract(
+            contractABI.abi,
+            contractAddress
+          );
+          setContract(contractInstance);
 
-          const memberStatus = await contractInstance.methods.getMemberStatus(accounts[0]).call()
-          setIsMember(Boolean(memberStatus))
+          const memberStatus = await contractInstance.methods
+            .getMemberStatus(accounts[0])
+            .call();
+          setIsMember(Boolean(memberStatus));
 
-          await loadMessages()
+          await loadMessages();
         } catch (error) {
-          console.error('Failed to connect to wallet:', error)
+          console.error("Failed to connect to wallet:", error);
           toast({
-            title: 'Error',
-            description: 'Failed to connect to wallet. Please make sure MetaMask is installed and unlocked.',
-            variant: 'destructive',
-          })
+            title: "Error",
+            description:
+              "Failed to connect to wallet. Please make sure MetaMask is installed and unlocked.",
+            variant: "destructive",
+          });
         }
       } else {
         toast({
-          title: 'MetaMask not detected',
-          description: 'Please install MetaMask to use this dApp.',
-          variant: 'destructive',
-        })
+          title: "MetaMask not detected",
+          description: "Please install MetaMask to use this dApp.",
+          variant: "destructive",
+        });
       }
-    }
+    };
 
-    initWeb3()
+    initWeb3();
 
     // Listen for network changes
     const handleNetworkChange = async () => {
@@ -159,9 +170,11 @@ export default function StudyGroup() {
         method: "eth_chainId",
       });
       if (chainId !== "0xa045c") {
-        alert("You have switched to an incorrect network. Please switch back to the Open Campus Codex network.");
+        alert(
+          "You have switched to an incorrect network. Please switch back to the Open Campus Codex network."
+        );
         setIsConnected(false);
-        setAccount('');
+        setAccount("");
       }
     };
 
@@ -174,55 +187,55 @@ export default function StudyGroup() {
         window.ethereum.removeListener("chainChanged", handleNetworkChange);
       }
     };
-  }, [authState.idToken])
+  }, [authState.idToken]);
 
   const loadMessages = async () => {
     if (contract) {
-      const fetchedMessages = await contract.methods.getMessages().call()
-      setMessages(fetchedMessages)
+      const fetchedMessages = await contract.methods.getMessages().call();
+      setMessages(fetchedMessages);
     }
-  }
+  };
 
   const joinGroup = async () => {
     if (contract && account) {
       try {
-        await contract.methods.joinGroup().send({ from: account })
-        setIsMember(true)
+        await contract.methods.joinGroup().send({ from: account });
+        setIsMember(true);
         toast({
-          title: 'Success',
-          description: 'You have joined the study group!',
-        })
+          title: "Success",
+          description: "You have joined the study group!",
+        });
       } catch (error) {
-        console.error('Failed to join group:', error)
+        console.error("Failed to join group:", error);
         toast({
-          title: 'Error',
-          description: 'Failed to join the study group. Please try again.',
-          variant: 'destructive',
-        })
+          title: "Error",
+          description: "Failed to join the study group. Please try again.",
+          variant: "destructive",
+        });
       }
     }
-  }
+  };
 
   const sendMessage = async () => {
     if (contract && account && newMessage.trim()) {
       try {
-        await contract.methods.sendMessage(newMessage).send({ from: account })
-        setNewMessage('')
-        await loadMessages()
+        await contract.methods.sendMessage(newMessage).send({ from: account });
+        setNewMessage("");
+        await loadMessages();
         toast({
-          title: 'Success',
-          description: 'Message sent successfully!',
-        })
+          title: "Success",
+          description: "Message sent successfully!",
+        });
       } catch (error) {
-        console.error('Failed to send message:', error)
+        console.error("Failed to send message:", error);
         toast({
-          title: 'Error',
-          description: 'Failed to send message. Please try again.',
-          variant: 'destructive',
-        })
+          title: "Error",
+          description: "Failed to send message. Please try again.",
+          variant: "destructive",
+        });
       }
     }
-  }
+  };
 
   return (
     <div className="App min-h-screen flex flex-col items-center justify-between">
@@ -235,7 +248,7 @@ export default function StudyGroup() {
             </CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col items-center mt-4 space-y-6">
-          {!ocidUsername && <LoginButton />}
+            {!ocidUsername && <LoginButton />}
             {ocidUsername && (
               <div className="text-center text-xl">
                 <h1>
@@ -287,11 +300,16 @@ export default function StudyGroup() {
                 </div>
                 <div className="space-y-4 mt-6 w-full">
                   {messages.map((msg, index) => (
-                    <div key={index} className="bg-gray-100 p-4 rounded shadow-sm">
+                    <div
+                      key={index}
+                      className="bg-gray-100 p-4 rounded shadow-sm"
+                    >
                       <p className="font-semibold">{msg.sender}</p>
                       <p>{msg.content}</p>
                       <p className="text-xs text-gray-500 mt-2">
-                        {new Date(Number(msg.timestamp) * 1000).toLocaleString()}
+                        {new Date(
+                          Number(msg.timestamp) * 1000
+                        ).toLocaleString()}
                       </p>
                     </div>
                   ))}
@@ -303,5 +321,5 @@ export default function StudyGroup() {
       </div>
       <Footer />
     </div>
-  )
+  );
 }

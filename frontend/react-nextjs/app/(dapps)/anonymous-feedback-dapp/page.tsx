@@ -66,7 +66,7 @@ const FeedbackApp: React.FC = () => {
                   },
                   rpcUrls: ["https://rpc.open-campus-codex.gelato.digital"],
                   blockExplorerUrls: [
-                    "https://opencampus-codex.blockscout.com/",
+                    "https://edu-chain-testnet.blockscout.com/",
                   ],
                 },
               ],
@@ -248,7 +248,7 @@ const FeedbackApp: React.FC = () => {
                     <a
                       className="text-teal-300"
                       href={
-                        "https://opencampus-codex.blockscout.com/tx/" + txnHash
+                        "https://edu-chain-testnet.blockscout.com/tx/" + txnHash
                       }
                       target="_blank"
                       rel="noopener noreferrer"

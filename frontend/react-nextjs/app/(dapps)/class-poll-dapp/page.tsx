@@ -26,15 +26,18 @@ interface Poll {
 // Replace with your deployed contract address
 const contractAddress = "0x82D4bF11eA7d4295F94f9f6Ae4Bd04B91CCE11AA";
 
-
 const ClassPoll: React.FC = () => {
   const { authState } = useOCAuth();
   const [mmStatus, setMmStatus] = useState<string>("Not connected!");
   const [isConnected, setIsConnected] = useState<boolean>(false);
-  const [accountAddress, setAccountAddress] = useState<string | undefined>(undefined);
+  const [accountAddress, setAccountAddress] = useState<string | undefined>(
+    undefined
+  );
   const [web3, setWeb3] = useState<Web3 | undefined>(undefined);
   const [contracts, setContracts] = useState<Contracts | undefined>(undefined);
-  const [contractAddress, setContractAddress] = useState<string | undefined>(undefined);
+  const [contractAddress, setContractAddress] = useState<string | undefined>(
+    undefined
+  );
   const [loading, setLoading] = useState<boolean>(false);
   const [txnHash, setTxnHash] = useState<string | null>(null);
   const [showMessage, setShowMessage] = useState<boolean>(false);
@@ -66,7 +69,9 @@ const ClassPoll: React.FC = () => {
                     decimals: 18,
                   },
                   rpcUrls: ["https://rpc.open-campus-codex.gelato.digital"],
-                  blockExplorerUrls: ["https://opencampus-codex.blockscout.com/"],
+                  blockExplorerUrls: [
+                    "https://edu-chain-testnet.blockscout.com/",
+                  ],
                 },
               ],
             });
@@ -74,7 +79,10 @@ const ClassPoll: React.FC = () => {
             console.error("Failed to add Open Campus Codex network:", addError);
           }
         } else {
-          console.error("Failed to switch to Open Campus Codex network:", switchError);
+          console.error(
+            "Failed to switch to Open Campus Codex network:",
+            switchError
+          );
         }
       }
     }
@@ -84,13 +92,17 @@ const ClassPoll: React.FC = () => {
     if (typeof window.ethereum !== "undefined") {
       try {
         await switchToOpenCampusNetwork();
-        const chainId = await window.ethereum.request({ method: "eth_chainId" });
+        const chainId = await window.ethereum.request({
+          method: "eth_chainId",
+        });
         if (chainId !== "0xa045c") {
           alert("Please connect to the Open Campus Codex network in MetaMask.");
           return;
         }
         await window.ethereum.request({ method: "eth_requestAccounts" });
-        const accounts = await window.ethereum.request({ method: "eth_accounts" });
+        const accounts = await window.ethereum.request({
+          method: "eth_accounts",
+        });
         setAccountAddress(accounts[0]);
         setMmStatus("Connected!");
         setIsConnected(true);
@@ -130,7 +142,7 @@ const ClassPoll: React.FC = () => {
   }, [authState.idToken]);
 
   const createPoll = async () => {
-    if (!newQuestion.trim() || newOptions.some(option => !option.trim())) {
+    if (!newQuestion.trim() || newOptions.some((option) => !option.trim())) {
       alert("Please fill in all fields.");
       return;
     }
@@ -159,13 +171,13 @@ const ClassPoll: React.FC = () => {
     if (contracts) {
       try {
         const voteCounts = await contracts.methods.getVoteCounts().call();
-        setCurrentPoll(prevPoll => {
+        setCurrentPoll((prevPoll) => {
           if (prevPoll) {
             return { ...prevPoll, votes: voteCounts.map(Number) };
           }
           return null;
         });
-        setVoteCountsUpdated(prev => !prev);
+        setVoteCountsUpdated((prev) => !prev);
       } catch (error) {
         console.error("Failed to fetch vote counts:", error);
       }
@@ -200,7 +212,7 @@ const ClassPoll: React.FC = () => {
         const poll = await contracts.methods.getCurrentPoll().call();
         setCurrentPoll({
           ...poll,
-          votes: poll.votes.map(Number)
+          votes: poll.votes.map(Number),
         });
         await fetchVoteCounts();
       } catch (error) {
@@ -295,7 +307,10 @@ const ClassPoll: React.FC = () => {
               <div className="w-full space-y-4">
                 <h2 className="text-2xl font-bold">{currentPoll.question}</h2>
                 {currentPoll.options.map((option, index) => (
-                  <div key={index} className="flex justify-between items-center">
+                  <div
+                    key={index}
+                    className="flex justify-between items-center"
+                  >
                     <span>{option}</span>
                     <div className="space-x-2">
                       <span>{currentPoll.votes[index]} votes</span>
@@ -318,7 +333,7 @@ const ClassPoll: React.FC = () => {
                   <a
                     className="text-teal-300"
                     href={
-                      "https://opencampus-codex.blockscout.com/tx/" + txnHash
+                      "https://edu-chain-testnet.blockscout.com/tx/" + txnHash
                     }
                     target="_blank"
                     rel="noopener noreferrer"

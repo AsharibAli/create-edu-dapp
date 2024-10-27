@@ -29,7 +29,7 @@ const config: HardhatUserConfig = {
         network: "opencampus",
         chainId: 656476,
         urls: {
-          apiURL: "https://opencampus-codex.blockscout.com/api/",
+          apiURL: "https://edu-chain-testnet.blockscout.com/api/",
           browserURL: "opencampus-codex.blockscout.com",
         },
       },

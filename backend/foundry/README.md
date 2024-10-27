@@ -30,7 +30,7 @@ forge script script/DeployGreeter.s.sol --broadcast --rpc-url https://rpc.open-c
 forge verify-contract \
   --rpc-url https://rpc.open-campus-codex.gelato.digital \
   --verifier blockscout \
-  --verifier-url 'https://opencampus-codex.blockscout.com/api/' \
+  --verifier-url 'https://edu-chain-testnet.blockscout.com/api/' \
   <deployed-contract-address> \
   [contractFile]:[contractName]
 

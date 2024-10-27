@@ -217,7 +217,7 @@ To verify the deployed smart contract on `Open Campus Codex`, execute the follow
 forge verify-contract \
   --rpc-url https://rpc.open-campus-codex.gelato.digital \
   --verifier blockscout \
-  --verifier-url 'https://opencampus-codex.blockscout.com/api/' \
+  --verifier-url 'https://edu-chain-testnet.blockscout.com/api/' \
   <deployed-contract-address> \
   [contractFile]:[contractName]
 ```

@@ -26,13 +26,15 @@ interface Submission {
 }
 
 // Replace with your deployed contract address
-const contractAddress = "0x0EA845BCC2bafD0C54cD0CFfCEF23B57aac439ED"; 
+const contractAddress = "0x0EA845BCC2bafD0C54cD0CFfCEF23B57aac439ED";
 
 export default function Component() {
   const { authState } = useOCAuth();
   const [mmStatus, setMmStatus] = useState<string>("Not connected!");
   const [isConnected, setIsConnected] = useState<boolean>(false);
-  const [accountAddress, setAccountAddress] = useState<string | undefined>(undefined);
+  const [accountAddress, setAccountAddress] = useState<string | undefined>(
+    undefined
+  );
   const [web3, setWeb3] = useState<Web3 | undefined>(undefined);
   const [contract, setContract] = useState<any>(undefined);
   const [ocidUsername, setOcidUsername] = useState<string | null>(null);
@@ -65,7 +67,9 @@ export default function Component() {
                     decimals: 18,
                   },
                   rpcUrls: ["https://rpc.open-campus-codex.gelato.digital"],
-                  blockExplorerUrls: ["https://opencampus-codex.blockscout.com/"],
+                  blockExplorerUrls: [
+                    "https://edu-chain-testnet.blockscout.com/",
+                  ],
                 },
               ],
             });
@@ -73,7 +77,10 @@ export default function Component() {
             console.error("Failed to add Open Campus Codex network:", addError);
           }
         } else {
-          console.error("Failed to switch to Open Campus Codex network:", switchError);
+          console.error(
+            "Failed to switch to Open Campus Codex network:",
+            switchError
+          );
         }
       }
     }
@@ -83,15 +90,19 @@ export default function Component() {
     if (typeof window.ethereum !== "undefined") {
       try {
         await switchToOpenCampusNetwork();
-        const chainId = await window.ethereum.request({ method: "eth_chainId" });
-        
+        const chainId = await window.ethereum.request({
+          method: "eth_chainId",
+        });
+
         if (chainId !== "0xa045c") {
           alert("Please connect to the Open Campus Codex network in MetaMask.");
           return;
         }
 
         await window.ethereum.request({ method: "eth_requestAccounts" });
-        const accounts = await window.ethereum.request({ method: "eth_accounts" });
+        const accounts = await window.ethereum.request({
+          method: "eth_accounts",
+        });
         setAccountAddress(accounts[0]);
         setMmStatus("Connected!");
         setIsConnected(true);
@@ -108,7 +119,7 @@ export default function Component() {
       const decodedToken = jwtDecode<DecodedToken>(authState.idToken);
       setOcidUsername(decodedToken.edu_username);
       // Change this to the actual educator OCID username
-      setIsEducator(decodedToken.edu_username.startsWith("edu_")); 
+      setIsEducator(decodedToken.edu_username.startsWith("edu_"));
     }
 
     (async () => {
@@ -116,7 +127,7 @@ export default function Component() {
         if (typeof window.ethereum !== "undefined") {
           const web3 = new Web3(window.ethereum);
           setWeb3(web3);
-         
+
           const AssignmentSubmission = new web3.eth.Contract(
             contractJson.abi,
             contractAddress
@@ -264,7 +275,7 @@ export default function Component() {
                     <a
                       className="text-teal-300"
                       href={
-                        "https://opencampus-codex.blockscout.com/tx/" + txnHash
+                        "https://edu-chain-testnet.blockscout.com/tx/" + txnHash
                       }
                       target="_blank"
                       rel="noopener noreferrer"
@@ -283,7 +294,10 @@ export default function Component() {
                   <div key={index} className="border-b py-2">
                     <p>Student: {submission.student}</p>
                     <p>Assignment Hash: {submission.assignmentHash}</p>
-                    <p>Timestamp: {new Date(submission.timestamp * 1000).toLocaleString()}</p>
+                    <p>
+                      Timestamp:{" "}
+                      {new Date(submission.timestamp * 1000).toLocaleString()}
+                    </p>
                     <p>Verified: {submission.verified ? "Yes" : "No"}</p>
                     {!submission.verified && (
                       <Button
@@ -302,7 +316,8 @@ export default function Component() {
                 <AlertCircle className="h-4 w-4" />
                 <AlertTitle>Student View</AlertTitle>
                 <AlertDescription>
-                  As a student, you can submit assignments but cannot view all submissions, only educators with ocid (edu_) can see it.
+                  As a student, you can submit assignments but cannot view all
+                  submissions, only educators with ocid (edu_) can see it.
                 </AlertDescription>
               </Alert>
             )}

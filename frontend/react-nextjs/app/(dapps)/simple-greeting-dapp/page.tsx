@@ -62,7 +62,9 @@ const App: React.FC = () => {
                     decimals: 18,
                   },
                   rpcUrls: ["https://rpc.open-campus-codex.gelato.digital"],
-                  blockExplorerUrls: ["https://opencampus-codex.blockscout.com/"],
+                  blockExplorerUrls: [
+                    "https://edu-chain-testnet.blockscout.com/",
+                  ],
                 },
               ],
             });
@@ -70,7 +72,10 @@ const App: React.FC = () => {
             console.error("Failed to add Open Campus Codex network:", addError);
           }
         } else {
-          console.error("Failed to switch to Open Campus Codex network:", switchError);
+          console.error(
+            "Failed to switch to Open Campus Codex network:",
+            switchError
+          );
         }
       }
     }
@@ -86,7 +91,7 @@ const App: React.FC = () => {
         const chainId = await window.ethereum.request({
           method: "eth_chainId",
         });
-        
+
         if (chainId !== "0xa045c") {
           alert("Please connect to the Open Campus Codex network in MetaMask.");
           return;
@@ -247,7 +252,7 @@ const App: React.FC = () => {
                     <a
                       className="text-teal-300"
                       href={
-                        "https://opencampus-codex.blockscout.com/tx/" + txnHash
+                        "https://edu-chain-testnet.blockscout.com/tx/" + txnHash
                       }
                       target="_blank"
                       rel="noopener noreferrer"

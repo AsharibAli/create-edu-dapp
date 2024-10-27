@@ -24,11 +24,15 @@ const StudyTracker: React.FC = () => {
   const { authState } = useOCAuth();
   const [mmStatus, setMmStatus] = useState<string>("Not connected!");
   const [isConnected, setIsConnected] = useState<boolean>(false);
-  const [accountAddress, setAccountAddress] = useState<string | undefined>(undefined);
+  const [accountAddress, setAccountAddress] = useState<string | undefined>(
+    undefined
+  );
   const [web3, setWeb3] = useState<Web3 | undefined>(undefined);
   const [getNetwork, setGetNetwork] = useState<number | undefined>(undefined);
   const [contracts, setContracts] = useState<Contracts | undefined>(undefined);
-  const [contractAddress, setContractAddress] = useState<string | undefined>(undefined);
+  const [contractAddress, setContractAddress] = useState<string | undefined>(
+    undefined
+  );
   const [loading, setLoading] = useState<boolean>(false);
   const [txnHash, setTxnHash] = useState<string | null>(null);
   const [showMessage, setShowMessage] = useState<boolean>(false);
@@ -62,7 +66,9 @@ const StudyTracker: React.FC = () => {
                     decimals: 18,
                   },
                   rpcUrls: ["https://rpc.open-campus-codex.gelato.digital"],
-                  blockExplorerUrls: ["https://opencampus-codex.blockscout.com/"],
+                  blockExplorerUrls: [
+                    "https://edu-chain-testnet.blockscout.com/",
+                  ],
                 },
               ],
             });
@@ -70,7 +76,10 @@ const StudyTracker: React.FC = () => {
             console.error("Failed to add Open Campus Codex network:", addError);
           }
         } else {
-          console.error("Failed to switch to Open Campus Codex network:", switchError);
+          console.error(
+            "Failed to switch to Open Campus Codex network:",
+            switchError
+          );
         }
       }
     }
@@ -86,7 +95,7 @@ const StudyTracker: React.FC = () => {
         const chainId = await window.ethereum.request({
           method: "eth_chainId",
         });
-        
+
         if (chainId !== "0xa045c") {
           alert("Please connect to the Open Campus Codex network in MetaMask.");
           return;
@@ -99,7 +108,7 @@ const StudyTracker: React.FC = () => {
         setAccountAddress(accounts[0]);
         setMmStatus("Connected!");
         setIsConnected(true);
-        localStorage.setItem('walletAddress', accounts[0]);
+        localStorage.setItem("walletAddress", accounts[0]);
       } catch (error) {
         console.error("Failed to connect to wallet:", error);
       }
@@ -110,7 +119,7 @@ const StudyTracker: React.FC = () => {
 
   useEffect(() => {
     // Check local storage for wallet connection
-    const storedAddress = localStorage.getItem('walletAddress');
+    const storedAddress = localStorage.getItem("walletAddress");
     if (storedAddress) {
       setAccountAddress(storedAddress);
       setIsConnected(true);
@@ -121,10 +130,10 @@ const StudyTracker: React.FC = () => {
     if (authState.idToken) {
       const decodedToken = jwtDecode<DecodedToken>(authState.idToken);
       setOcidUsername(decodedToken.edu_username);
-      localStorage.setItem('ocidUsername', decodedToken.edu_username);
+      localStorage.setItem("ocidUsername", decodedToken.edu_username);
     } else {
       // Check local storage for OCID username
-      const storedUsername = localStorage.getItem('ocidUsername');
+      const storedUsername = localStorage.getItem("ocidUsername");
       if (storedUsername) {
         setOcidUsername(storedUsername);
       }
@@ -155,7 +164,7 @@ const StudyTracker: React.FC = () => {
               setMmStatus("Connected!");
             } else {
               // Clear stored address if it doesn't match current account
-              localStorage.removeItem('walletAddress');
+              localStorage.removeItem("walletAddress");
               setIsConnected(false);
               setMmStatus("Not connected!");
             }
@@ -170,12 +179,15 @@ const StudyTracker: React.FC = () => {
 
     // Add event listener for account changes
     if (window.ethereum) {
-      window.ethereum.on('accountsChanged', handleAccountsChanged);
+      window.ethereum.on("accountsChanged", handleAccountsChanged);
     }
 
     return () => {
       if (window.ethereum) {
-        window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
+        window.ethereum.removeListener(
+          "accountsChanged",
+          handleAccountsChanged
+        );
       }
     };
   }, [authState.idToken]);
@@ -186,13 +198,13 @@ const StudyTracker: React.FC = () => {
       setIsConnected(false);
       setAccountAddress(undefined);
       setMmStatus("Not connected!");
-      localStorage.removeItem('walletAddress');
+      localStorage.removeItem("walletAddress");
     } else if (accounts[0] !== accountAddress) {
       // User switched to a different account
       setAccountAddress(accounts[0]);
       setIsConnected(true);
       setMmStatus("Connected!");
-      localStorage.setItem('walletAddress', accounts[0]);
+      localStorage.setItem("walletAddress", accounts[0]);
     }
   };
 
@@ -244,7 +256,9 @@ const StudyTracker: React.FC = () => {
   const getTotalStudyTime = async () => {
     if (contracts && accountAddress) {
       try {
-        const totalTime = await contracts.methods.getTotalStudyTime().call({ from: accountAddress });
+        const totalTime = await contracts.methods
+          .getTotalStudyTime()
+          .call({ from: accountAddress });
         setTotalStudyTime(parseInt(totalTime));
       } catch (error) {
         console.error("Failed to get total study time:", error);
@@ -256,7 +270,9 @@ const StudyTracker: React.FC = () => {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
     const remainingSeconds = seconds % 60;
-    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+    return `${hours.toString().padStart(2, "0")}:${minutes
+      .toString()
+      .padStart(2, "0")}:${remainingSeconds.toString().padStart(2, "0")}`;
   };
 
   return (
@@ -304,7 +320,9 @@ const StudyTracker: React.FC = () => {
                 </div>
                 <Button
                   className={`${
-                    isStudying ? "bg-red-500 hover:bg-red-700" : "bg-green-500 hover:bg-green-700"
+                    isStudying
+                      ? "bg-red-500 hover:bg-red-700"
+                      : "bg-green-500 hover:bg-green-700"
                   } text-white font-bold py-2 px-4 rounded-full`}
                   onClick={toggleStudyTimer}
                 >
@@ -323,13 +341,16 @@ const StudyTracker: React.FC = () => {
             )}
             {showMessage && (
               <>
-                <p className="text-center text-sm mt-6"> Recording study session...</p>
+                <p className="text-center text-sm mt-6">
+                  {" "}
+                  Recording study session...
+                </p>
                 <p className="mt-4 text-xs ">
                   Txn hash:{" "}
                   <a
                     className="text-teal-300"
                     href={
-                      "https://opencampus-codex.blockscout.com/tx/" + txnHash
+                      "https://edu-chain-testnet.blockscout.com/tx/" + txnHash
                     }
                     target="_blank"
                     rel="noopener noreferrer"
