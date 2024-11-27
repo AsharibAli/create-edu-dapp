@@ -23,11 +23,17 @@ npx hardhat compile
 # For testing the smart contracts
 npx hardhat test
 
-# For deloying the smart contracts
-npx hardhat run scripts/deploy.ts --network opencampus
+# For deploying the smart contracts to testnet
+npx hardhat run scripts/deployGreeter.ts --network educhain-testnet
 
-# For verifying the smart contracts
-npx hardhat verify --network opencampus <deployed-contract-address>
+# For deploying the smart contracts to mainnet 
+npx hardhat run scripts/deployGreeter.ts --network educhain-mainnet
+
+# For verifying the smart contracts on testnet
+npx hardhat verify --network educhain-testnet <deployed-contract-address>
+
+# For verifying the smart contracts on mainnet
+npx hardhat verify --network educhain-mainnet <deployed-contract-address>
 
 # Display help information for Hardhat
 npx hardhat help
