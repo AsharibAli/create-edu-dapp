@@ -38,7 +38,7 @@ const FeedbackApp: React.FC = () => {
     if (authState.idToken) {
       const decodedToken = jwtDecode<DecodedToken>(authState.idToken);
       setOcidUsername(decodedToken.edu_username);
-      setIsEducator(decodedToken.edu_username.startsWith("asharib"));
+      setIsEducator(decodedToken.edu_username.startsWith("edu_"));
     }
   }, [authState.idToken]);
 

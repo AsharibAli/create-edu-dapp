@@ -2,7 +2,7 @@
   "name": "create-edu-dapp-nextjs",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/asharibali/create-edu-dapp-hardhat.git"
+    "url": "git+https://github.com/asharibali/create-edu-dapp.git"
   },
   "keywords": [
     "evm",
@@ -14,7 +14,7 @@
   "author": "Asharib Ali",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/asharibali/create-edu-dapp-hardhat/issues"
+    "url": "https://github.com/asharibali/create-edu-dapp/issues"
   },
   "scripts": {
     "dev": "next dev --turbo",
@@ -23,12 +23,13 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@opencampus/ocid-connect-js": "^1.2.1",
+    "@opencampus/ocid-connect-js": "^1.0.1",
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-toast": "^1.2.1",
     "chalk": "^5.3.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "js-cookie": "^3.0.5",
     "jwt-decode": "^4.0.0",
     "lucide-react": "^0.424.0",
     "next": "14.2.5",
