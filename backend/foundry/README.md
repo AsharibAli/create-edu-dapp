@@ -31,11 +31,27 @@ forge script script/DeployGreeter.s.sol \
   --with-gas-price 5gwei \
   --skip-simulation
 
+# For deploying the smart contracts to mainnet 
+forge script script/DeployGreeter.s.sol \
+  --broadcast \
+  --rpc-url https://rpc.edu-chain.raas.gelato.cloud/ \
+  --gas-limit 30000000 \
+  --with-gas-price 5gwei \
+  --skip-simulation
+
 # For verifying the smart contracts on testnet
 forge verify-contract \
   --rpc-url https://rpc.open-campus-codex.gelato.digital \
   --verifier blockscout \
   --verifier-url 'https://edu-chain-testnet.blockscout.com/api/' \
+  <deployed-contract-address> \
+  [contractFile]:[contractName]
+
+# For verifying the smart contracts on mainnet
+forge verify-contract \
+  --rpc-url https://rpc.edu-chain.raas.gelato.cloud \
+  --verifier blockscout \
+  --verifier-url 'https://educhain.blockscout.com/api/' \
   <deployed-contract-address> \
   [contractFile]:[contractName]
 

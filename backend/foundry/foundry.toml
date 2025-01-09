@@ -5,14 +5,23 @@ libs = ["lib"]
 
 [rpc_endpoints]
 educhain-testnet = "https://rpc.open-campus-codex.gelato.digital"
+educhain-mainnet = "https://rpc.edu-chain.raas.gelato.cloud"
 
 [etherscan]
 educhain-testnet = { key = "xxx", url = "https://edu-chain-testnet.blockscout.com/api" }
+educhain-mainnet = { key = "xxx", url = "https://educhain.blockscout.com/api" }
+
 # Chain configurations
 [profile.chains.656476] # EDU Chain Testnet
 name = "educhain-testnet"
 chain_id = 656476
 explorer = "https://edu-chain-testnet.blockscout.com"
+currency = "EDU"
+
+[profile.chains.41923]  # EDU Chain Mainnet
+name = "educhain-mainnet"
+chain_id = 41923
+explorer = "https://educhain.blockscout.com"
 currency = "EDU"
 
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
