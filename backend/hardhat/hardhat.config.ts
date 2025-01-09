@@ -16,18 +16,13 @@ const config: HardhatUserConfig = {
       url: `https://rpc.open-campus-codex.gelato.digital`,
       accounts: [ACCOUNT_PRIVATE_KEY],
     },
-    "educhain-mainnet": {
-      url: `https://rpc.edu-chain.raas.gelato.cloud`,
-      accounts: [ACCOUNT_PRIVATE_KEY],
-    },
   },
   sourcify: {
     enabled: false,
   },
   etherscan: {
     apiKey: {
-      opencampus: "xxx",
-      educhain: "xxx",
+      'educhain-testnet': "xxx",
     },
     customChains: [
       {
@@ -36,14 +31,6 @@ const config: HardhatUserConfig = {
         urls: {
           apiURL: "https://edu-chain-testnet.blockscout.com/api/",
           browserURL: "https://edu-chain-testnet.blockscout.com",
-        },
-      },
-      {
-        network: "educhain-mainnet",
-        chainId: 41923,
-        urls: {
-          apiURL: "https://educhain.blockscout.com/api/",
-          browserURL: "https://educhain.blockscout.com",
         },
       },
     ],
