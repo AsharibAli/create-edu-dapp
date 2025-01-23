@@ -40,7 +40,7 @@ const config: HardhatUserConfig = {
       },
       {
         network: "educhain-mainnet",
-        chainId: 656475,
+        chainId: 41923,
         urls: {
           apiURL: "https://educhain.blockscout.com/api/",
           browserURL: "https://educhain.blockscout.com",
