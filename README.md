@@ -128,7 +128,7 @@ For deploying the smart contracts to `open campus codex` network, type the follo
 
 ```sh
 # For deploying the smart contracts
-npx hardhat run scripts/deploy.ts --network opencampus
+npx hardhat run scripts/deploy.ts --network educhain-testnet
 ```
 
 ```sh
@@ -145,7 +145,7 @@ To verify the deployed smart contract on `Open Campus Codex`, execute the follow
 
 ```sh
 # For verifying the smart contracts
-npx hardhat verify --network opencampus <deployed-contract-address>
+npx hardhat verify --network educhain-testnet <deployed-contract-address>
 ```
 
 # Foundry Setup
@@ -265,4 +265,6 @@ We welcome contributions from the community! If you'd like to contribute, please
 
 create-edu-dapp is licensed under the [MIT License](https://github.com/AsharibAli/create-edu-dapp/blob/main/LICENSE.md).
 
-### ⭐️ Don't forget to star the repository, and [follow me on X](https://x.com/0xAsharib).
+### ⭐️ Support the Project
+
+If you enjoy using EduKit, please show your support by starring the repository and follow EduHub on [X](https://x.com/eduhub__) for the latest updates and insights.
