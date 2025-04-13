@@ -103,7 +103,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from "vue";
-import { useOCAuth } from "@opencampus/ocid-connect-js";
+import { useOCAuth } from "@/composables/useOCAuth";
 import { jwtDecode } from "jwt-decode";
 import Web3 from "web3";
 import contractJson from "@/contracts/AnonymousFeedback.sol/AnonymousFeedback.json";
