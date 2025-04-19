@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import { useOCAuth } from "@/composables/useOCAuth";
+import { useOCAuth } from "@opencampus/ocid-connect-js";
 import OCButton from "./OCButton.vue";
 
 export default {

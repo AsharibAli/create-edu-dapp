@@ -82,7 +82,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, watch } from "vue";
-import { useOCAuth } from "@/composables/useOCAuth";
+import { useOCAuth } from "@opencampus/ocid-connect-js";
 import { jwtDecode } from "jwt-decode";
 import Web3 from "web3";
 import contractJson from "@/contracts/StudyTracker.sol/StudyTracker.json";
