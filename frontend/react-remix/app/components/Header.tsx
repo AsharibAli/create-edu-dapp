@@ -33,31 +33,33 @@ const Header = () => {
             aria-hidden="true"
           />
         </Link>
-        <h1 className="text-base sm:text-xl px-12 sm:px-16 line-clamp-2 sm:line-clamp-none">
+        <h1 className="text-base sm:text-xl px-12 sm:px-16 line-clamp-2 sm:line-clamp-none text-gray-800">
           <span aria-label="Lightning bolt">⚡</span>A starter kit for building{" "}
-          <strong className="text-teal-300 no-underline hover:underline hover:text-teal-700">
+          <strong className="text-teal-600 no-underline hover:underline hover:text-teal-700">
             (dApps)
           </strong>{" "}
-          <span className="hidden sm:inline">on the Open Campus L3 </span>
+          <span className="hidden sm:inline text-gray-800">
+            on the Open Campus L3{" "}
+          </span>
           <strong className="hidden sm:inline">
             <a
               href="https://educhain.xyz/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-teal-300 no-underline hover:underline hover:text-teal-700"
+              className="text-teal-600 no-underline hover:underline hover:text-teal-700"
               aria-label="Visit EduChain website (opens in new tab)"
             >
               (EduChain)
             </a>
           </strong>
-          <span className="hidden sm:inline">, powered by </span>
+          <span className="hidden sm:inline text-gray-800">, powered by </span>
           <strong className="hidden sm:inline">
             {" "}
             <a
               href="https://www.npmjs.com/package/create-edu-dapp"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-teal-300 no-underline hover:underline hover:text-teal-700"
+              className="text-teal-600 no-underline hover:underline hover:text-teal-700"
               aria-label="Visit create-edu-dapp on NPM (opens in new tab)"
             >
               create-edu-dapp <span aria-label="rocket">🚀</span>

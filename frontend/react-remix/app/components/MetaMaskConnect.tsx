@@ -9,7 +9,6 @@ interface MetaMaskConnectProps {
   className?: string;
 }
 
-// Add TypeScript declaration for window.ethereum
 declare global {
   interface Window {
     ethereum?: any;
@@ -29,13 +28,11 @@ export const MetaMaskConnect: React.FC<MetaMaskConnectProps> = ({
   );
 
   useEffect(() => {
-    // Check localStorage for existing connection
     const storedAddress = localStorage.getItem("walletAddress");
     if (storedAddress) {
       checkConnection(storedAddress);
     }
 
-    // Add event listeners for account and network changes
     if (typeof window !== "undefined" && window.ethereum) {
       window.ethereum.on("accountsChanged", handleAccountsChanged);
       window.ethereum.on("chainChanged", handleChainChanged);

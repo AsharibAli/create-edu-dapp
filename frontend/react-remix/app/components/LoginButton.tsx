@@ -1,13 +1,16 @@
 import { useOCAuth } from "@opencampus/ocid-connect-js";
 import OCButton from "./OCButton";
-import { useEffect } from "react";
-import { useNavigate } from "@remix-run/react";
+import { useLocation } from "@remix-run/react";
 
 const LoginButton = () => {
   const { ocAuth } = useOCAuth();
-  const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogin = async () => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("previousPath", location.pathname);
+    }
+
     await ocAuth.signInWithRedirect({
       state: "opencampus",
     });

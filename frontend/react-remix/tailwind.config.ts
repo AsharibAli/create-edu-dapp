@@ -18,7 +18,7 @@ const config = {
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
+        foreground: "hsl(var(--foreground, 215 25% 27%))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
@@ -33,7 +33,7 @@ const config = {
         },
         muted: {
           DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
+          foreground: "hsl(var(--muted-foreground, 215 25% 27%))",
         },
         accent: {
           DEFAULT: "hsl(var(--accent))",
@@ -41,11 +41,17 @@ const config = {
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
+          foreground: "hsl(var(--popover-foreground, 215 25% 27%))",
         },
         card: {
           DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
+          foreground: "hsl(var(--card-foreground, 215 25% 27%))",
+        },
+
+        text: {
+          primary: "#1e293b",
+          secondary: "#334155",
+          muted: "#64748b",
         },
       },
       borderRadius: {
@@ -79,9 +85,30 @@ const config = {
           "Noto Color Emoji",
         ],
       },
+
+      textColor: {
+        DEFAULT: "#1e293b",
+      },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+
+    function ({ addBase }: any) {
+      addBase({
+        html: { color: "#1e293b" },
+        body: { color: "#1e293b" },
+        p: { color: "#1e293b" },
+        span: { color: "#1e293b" },
+        div: { color: "#1e293b" },
+        "h1, h2, h3, h4, h5, h6": { color: "#1e293b" },
+        a: { color: "#0d9488" },
+
+        ".wallet-info": { color: "#1e293b", fontWeight: "500" },
+        ".transaction-hash": { color: "#0d9488" },
+      });
+    },
+  ],
 } satisfies Config;
 
 export default config;
