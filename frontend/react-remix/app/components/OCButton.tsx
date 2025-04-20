@@ -61,7 +61,7 @@ const OCButton: React.FC<OCButtonProps> = ({
             fill="#141BEB"
           />
         </svg>
-        <span className="font-medium">{children}</span>
+        <span className="font-medium text-white">{children}</span>
       </div>
     </button>
   );
