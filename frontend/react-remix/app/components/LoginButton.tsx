@@ -7,13 +7,17 @@ const LoginButton = () => {
   const location = useLocation();
 
   const handleLogin = async () => {
-    if (typeof window !== "undefined") {
-      localStorage.setItem("previousPath", location.pathname);
-    }
+    try {
+      if (typeof window !== "undefined") {
+        localStorage.setItem("previousPath", location.pathname);
+      }
 
-    await ocAuth.signInWithRedirect({
-      state: "opencampus",
-    });
+      await ocAuth.signInWithRedirect({
+        state: "opencampus",
+      });
+    } catch (error) {
+      console.error("Error initiating login:", error);
+    }
   };
 
   return <OCButton onClick={handleLogin}>Connect OCID</OCButton>;

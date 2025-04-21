@@ -12,12 +12,10 @@ export default function RedirectPage() {
       try {
         await ocAuth.handleLoginRedirect();
 
+        navigate("/user");
+
         if (typeof window !== "undefined") {
-          const previousPath = localStorage.getItem("previousPath") || "/";
-          localStorage.removeItem("previousPath");
-          navigate(previousPath);
-        } else {
-          navigate("/");
+          localStorage.setItem("previousPath", window.location.pathname || "/");
         }
       } catch (error) {
         console.error("Authentication error:", error);
@@ -26,7 +24,7 @@ export default function RedirectPage() {
     };
 
     handleAuth();
-  }, [ocAuth]);
+  }, [ocAuth, navigate]);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
