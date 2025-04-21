@@ -187,5 +187,3 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - OpenCampus team for the OCID authentication
 - EDUChain for the blockchain infrastructure
 - Remix team for the framework
-
-Similar code found with 2 license types
