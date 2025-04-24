@@ -106,8 +106,6 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from "vue";
-import { useOCAuth } from "@opencampus/ocid-connect-js";
-import { jwtDecode } from "jwt-decode";
 import Web3 from "web3";
 import contractJson from "@/contracts/AssignmentSubmission.sol/AssignmentSubmission.json";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -117,7 +115,6 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-vue-next";
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
-import LoginButton from "@/components/LoginButton.vue";
 
 interface DecodedToken {
   edu_username: string;
@@ -132,8 +129,6 @@ interface Submission {
 }
 
 const contractAddress = "0x0EA845BCC2bafD0C54cD0CFfCEF23B57aac439ED";
-
-const { authState } = useOCAuth();
 const mmStatus = ref("Not connected!");
 const isConnected = ref(false);
 const accountAddress = ref<string | undefined>(undefined);
@@ -215,12 +210,6 @@ const connectWallet = async () => {
 };
 
 onMounted(() => {
-  if (authState.value.idToken) {
-    const decodedToken = jwtDecode<DecodedToken>(authState.value.idToken);
-    ocidUsername.value = decodedToken.edu_username;
-    isEducator.value = decodedToken.edu_username.startsWith("edu_");
-  }
-
   if (typeof window.ethereum !== "undefined") {
     const web3Instance = new Web3(window.ethereum);
     web3.value = web3Instance;

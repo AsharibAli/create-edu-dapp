@@ -79,8 +79,6 @@
 
 <script setup lang="ts">
 import { ref, onMounted, watch } from "vue";
-import { useOCAuth } from "@opencampus/ocid-connect-js";
-import { jwtDecode } from "jwt-decode";
 import Web3 from "web3";
 import contractABI from "@/contracts/StudyGroup.sol/StudyGroup.json";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -89,7 +87,6 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/toast";
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
-import LoginButton from "@/components/LoginButton.vue";
 
 interface Message {
   sender: string;
@@ -104,7 +101,6 @@ interface DecodedToken {
 
 const contractAddress = "0x158f83cD37e7774b520ADCb9BD7bc80330378c1B";
 
-const { authState } = useOCAuth();
 const { toast } = useToast();
 
 const web3 = ref<Web3 | null>(null);
@@ -277,14 +273,6 @@ const sendMessage = async () => {
     }
   }
 };
-
-onMounted(() => {
-  if (authState.value.idToken) {
-    const decodedToken = jwtDecode<DecodedToken>(authState.value.idToken);
-    ocidUsername.value = decodedToken.edu_username;
-  }
-  initWeb3();
-});
 
 watch(
   () => window.ethereum,

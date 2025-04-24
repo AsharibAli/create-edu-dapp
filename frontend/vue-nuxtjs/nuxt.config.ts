@@ -51,8 +51,6 @@ export default defineNuxtConfig({
   typescript: {
     strict: false,
   },
-  build: {
-    transpile: ["@opencampus/ocid-connect-js"],
-  },
+  build: {},
   ssr: false, // Disable server-side rendering if your app relies heavily on client-side features
 });

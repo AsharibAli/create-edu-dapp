@@ -6,41 +6,36 @@
     >
       <Card class="w-full max-w-2xl p-8 shadow-lg">
         <CardHeader>
-          <template v-if="userInfo">
+          <template v-if="accountAddress">
             <CardTitle class="text-center text-4xl font-bold mt-2">
-              Welcome to Open Campus ID
+              Wallet Details
             </CardTitle>
             <p class="mb-6 text-gray-600 text-center font-bold text-xl">
-              Here are your OCID details:
+              Your MetaMask connection information:
             </p>
           </template>
           <template v-else>
             <div class="text-center">
               <CardTitle class="text-2xl font-bold mb-4">
-                Connect with OCID
+                Connect MetaMask Wallet
               </CardTitle>
               <p class="mb-6 text-gray-600">
-                Please link with open campus to view your details.
+                Please connect your MetaMask wallet to continue.
               </p>
-              <LoginButton />
+              <Button
+                @click="connectWallet"
+                class="bg-teal-400 hover:bg-teal-700 text-black font-bold py-2 px-4 rounded-md"
+              >
+                Connect Wallet
+              </Button>
             </div>
           </template>
         </CardHeader>
-        <CardContent v-if="userInfo">
+        <CardContent v-if="accountAddress">
           <div>
-            <p><strong>User ID:</strong> {{ userInfo.user_id }}</p>
-            <p><strong>Ethereum Address:</strong> {{ userInfo.eth_address }}</p>
-            <p><strong>Username:</strong> {{ userInfo.edu_username }}</p>
-            <p><strong>Issuer:</strong> {{ userInfo.iss }}</p>
-            <p>
-              <strong>Issued At:</strong>
-              {{ new Date(userInfo.iat * 1000).toLocaleString() }}
-            </p>
-            <p>
-              <strong>Expiration:</strong>
-              {{ new Date(userInfo.exp * 1000).toLocaleString() }}
-            </p>
-            <p><strong>Audience:</strong> {{ userInfo.aud }}</p>
+            <p><strong>Ethereum Address:</strong> {{ accountAddress }}</p>
+            <p><strong>Network ID:</strong> {{ networkId }}</p>
+            <p><strong>Connection Status:</strong> {{ connectionStatus }}</p>
           </div>
         </CardContent>
         <CardFooter class="flex justify-center">
@@ -58,13 +53,11 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed } from "vue";
+import { defineComponent, ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import { useOCAuth } from "@opencampus/ocid-connect-js";
-import { jwtDecode } from "jwt-decode";
+import Web3 from "web3";
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
-import LoginButton from "@/components/LoginButton.vue";
 import {
   Card,
   CardContent,
@@ -79,7 +72,6 @@ export default defineComponent({
   components: {
     Header,
     Footer,
-    LoginButton,
     Card,
     CardContent,
     CardFooter,
@@ -89,23 +81,128 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter();
-    const { authState } = useOCAuth();
+    const accountAddress = ref(null);
+    const networkId = ref(null);
+    const connectionStatus = ref("Not Connected");
+    const web3 = ref(null);
 
-    const error = computed(() => authState.value.error);
-    const userInfo = computed(() => {
-      if (authState.value.idToken) {
-        return jwtDecode(authState.value.idToken);
+    const connectWallet = async () => {
+      if (typeof window.ethereum !== "undefined") {
+        try {
+          await switchToOpenCampusNetwork();
+
+          const accounts = await window.ethereum.request({
+            method: "eth_requestAccounts",
+          });
+
+          accountAddress.value = accounts[0];
+          connectionStatus.value = "Connected";
+
+          const web3Instance = new Web3(window.ethereum);
+          web3.value = web3Instance;
+          networkId.value = await web3Instance.eth.getChainId();
+
+          localStorage.setItem("walletAddress", accounts[0]);
+        } catch (error) {
+          console.error("Failed to connect wallet:", error);
+        }
+      } else {
+        alert("Please install MetaMask!");
       }
-      return null;
-    });
+    };
+
+    const switchToOpenCampusNetwork = async () => {
+      if (typeof window.ethereum !== "undefined") {
+        try {
+          await window.ethereum.request({
+            method: "wallet_switchEthereumChain",
+            params: [{ chainId: "0xa045c" }],
+          });
+        } catch (switchError) {
+          if (switchError.code === 4902) {
+            try {
+              await window.ethereum.request({
+                method: "wallet_addEthereumChain",
+                params: [
+                  {
+                    chainId: "0xa045c",
+                    chainName: "Open Campus Codex",
+                    nativeCurrency: {
+                      name: "EDU",
+                      symbol: "EDU",
+                      decimals: 18,
+                    },
+                    rpcUrls: ["https://rpc.open-campus-codex.gelato.digital"],
+                    blockExplorerUrls: [
+                      "https://edu-chain-testnet.blockscout.com/",
+                    ],
+                  },
+                ],
+              });
+            } catch (addError) {
+              console.error(
+                "Failed to add Open Campus Codex network:",
+                addError
+              );
+            }
+          } else {
+            console.error(
+              "Failed to switch to Open Campus Codex network:",
+              switchError
+            );
+          }
+        }
+      }
+    };
 
     const goToHome = () => {
       router.push("/");
     };
 
+    onMounted(() => {
+      // Check if wallet was previously connected
+      const storedAddress = localStorage.getItem("walletAddress");
+      if (storedAddress && typeof window.ethereum !== "undefined") {
+        window.ethereum.request({ method: "eth_accounts" }).then((accounts) => {
+          if (accounts.length > 0 && accounts[0] === storedAddress) {
+            accountAddress.value = storedAddress;
+            connectionStatus.value = "Connected";
+
+            const web3Instance = new Web3(window.ethereum);
+            web3.value = web3Instance;
+            web3Instance.eth.getChainId().then((chainId) => {
+              networkId.value = chainId;
+            });
+          } else {
+            localStorage.removeItem("walletAddress");
+          }
+        });
+      }
+
+      // Setup event listeners for MetaMask
+      if (typeof window.ethereum !== "undefined") {
+        window.ethereum.on("accountsChanged", (accounts) => {
+          if (accounts.length === 0) {
+            accountAddress.value = null;
+            connectionStatus.value = "Not Connected";
+            localStorage.removeItem("walletAddress");
+          } else {
+            accountAddress.value = accounts[0];
+            localStorage.setItem("walletAddress", accounts[0]);
+          }
+        });
+
+        window.ethereum.on("chainChanged", () => {
+          window.location.reload();
+        });
+      }
+    });
+
     return {
-      error,
-      userInfo,
+      accountAddress,
+      networkId,
+      connectionStatus,
+      connectWallet,
       goToHome,
     };
   },

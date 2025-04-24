@@ -82,15 +82,12 @@
 
 <script setup lang="ts">
 import { ref, onMounted, watch } from "vue";
-import { useOCAuth } from "@opencampus/ocid-connect-js";
-import { jwtDecode } from "jwt-decode";
 import Web3 from "web3";
 import contractJson from "@/contracts/StudyTracker.sol/StudyTracker.json";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
-import LoginButton from "@/components/LoginButton.vue";
 
 interface DecodedToken {
   edu_username: string;
@@ -98,8 +95,6 @@ interface DecodedToken {
 }
 
 const contractAddress = "0x4592d03bf91Ba5667F2C064A3CC122917EC41f1F";
-
-const { authState } = useOCAuth();
 const mmStatus = ref("Not connected!");
 const isConnected = ref(false);
 const accountAddress = ref<string | undefined>(undefined);
@@ -192,19 +187,6 @@ onMounted(() => {
     accountAddress.value = storedAddress;
     isConnected.value = true;
     mmStatus.value = "Connected!";
-  }
-
-  // Check if user is logged in with OCID
-  if (authState.value.idToken) {
-    const decodedToken = jwtDecode<DecodedToken>(authState.value.idToken);
-    ocidUsername.value = decodedToken.edu_username;
-    localStorage.setItem("ocidUsername", decodedToken.edu_username);
-  } else {
-    // Check local storage for OCID username
-    const storedUsername = localStorage.getItem("ocidUsername");
-    if (storedUsername) {
-      ocidUsername.value = storedUsername;
-    }
   }
 
   // Initialize Web3 and set contract
