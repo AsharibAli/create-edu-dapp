@@ -126,7 +126,7 @@ export default defineComponent({
                 params: [
                   {
                     chainId: "0xa045c",
-                    chainName: "Open Campus Codex",
+                    chainName: "EDU Chain Testnet",
                     nativeCurrency: {
                       name: "EDU",
                       symbol: "EDU",
@@ -141,13 +141,13 @@ export default defineComponent({
               });
             } catch (addError) {
               console.error(
-                "Failed to add Open Campus Codex network:",
+                "Failed to add EDU Chain Testnet network:",
                 addError
               );
             }
           } else {
             console.error(
-              "Failed to switch to Open Campus Codex network:",
+              "Failed to switch to EDU Chain Testnet network:",
               switchError
             );
           }

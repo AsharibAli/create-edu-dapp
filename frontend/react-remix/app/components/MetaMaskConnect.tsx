@@ -100,7 +100,7 @@ export const MetaMaskConnect: React.FC<MetaMaskConnectProps> = ({
               params: [
                 {
                   chainId: OPEN_CAMPUS_CHAIN_ID,
-                  chainName: "Open Campus Codex",
+                  chainName: "EDU Chain Testnet",
                   nativeCurrency: {
                     name: "EDU",
                     symbol: "EDU",
@@ -108,28 +108,28 @@ export const MetaMaskConnect: React.FC<MetaMaskConnectProps> = ({
                   },
                   rpcUrls: ["https://rpc.open-campus-codex.gelato.digital"],
                   blockExplorerUrls: [
-                    "https://opencampus-codex.blockscout.com/",
+                    "https://edu-chain-testnet.blockscout.com/",
                   ],
                 },
               ],
             });
           } catch (addError) {
-            console.error("Failed to add Open Campus Codex network:", addError);
+            console.error("Failed to add EDU Chain Testnet network:", addError);
             toast({
               variant: "destructive",
               title: "Network Error",
-              description: "Failed to add Open Campus Codex network",
+              description: "Failed to add EDU Chain Testnet network",
             });
           }
         } else {
           console.error(
-            "Failed to switch to Open Campus Codex network:",
+            "Failed to switch to EDU Chain Testnet network:",
             switchError
           );
           toast({
             variant: "destructive",
             title: "Network Error",
-            description: "Failed to switch to Open Campus Codex network",
+            description: "Failed to switch to EDU Chain Testnet network",
           });
         }
       }
@@ -159,7 +159,7 @@ export const MetaMaskConnect: React.FC<MetaMaskConnectProps> = ({
       toast({
         variant: "destructive",
         title: "Network Error",
-        description: "Please connect to Open Campus Codex network",
+        description: "Please connect to EDU Chain Testnet network",
       });
       await switchToOpenCampusNetwork();
     }
@@ -193,7 +193,7 @@ export const MetaMaskConnect: React.FC<MetaMaskConnectProps> = ({
         toast({
           variant: "destructive",
           title: "Network Error",
-          description: "Please connect to Open Campus Codex network",
+          description: "Please connect to EDU Chain Testnet network",
         });
         return;
       }

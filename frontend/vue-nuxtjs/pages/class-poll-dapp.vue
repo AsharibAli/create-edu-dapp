@@ -147,7 +147,7 @@ const switchToOpenCampusNetwork = async () => {
             params: [
               {
                 chainId: "0xa045c",
-                chainName: "Open Campus Codex",
+                chainName: "EDU Chain Testnet",
                 nativeCurrency: {
                   name: "EDU",
                   symbol: "EDU",
@@ -161,11 +161,11 @@ const switchToOpenCampusNetwork = async () => {
             ],
           });
         } catch (addError) {
-          console.error("Failed to add Open Campus Codex network:", addError);
+          console.error("Failed to add EDU Chain Testnet network:", addError);
         }
       } else {
         console.error(
-          "Failed to switch to Open Campus Codex network:",
+          "Failed to switch to EDU Chain Testnet network:",
           switchError
         );
       }
@@ -180,7 +180,7 @@ const connectWallet = async () => {
       const chainId = await window.ethereum.request({ method: "eth_chainId" });
 
       if (chainId !== "0xa045c") {
-        alert("Please connect to the Open Campus Codex network in MetaMask.");
+        alert("Please connect to the EDU Chain Testnet network in MetaMask.");
         return;
       }
 
