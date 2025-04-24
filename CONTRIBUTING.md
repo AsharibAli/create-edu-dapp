@@ -19,29 +19,35 @@ If you find any bugs or have suggestions for new features, please [open an issue
      git clone https://github.com/<your-username>/create-edu-dapp.git
      ```
 
-3. **Create a Branch:**
+3. **Change Directory:**
+   - Change your current directory to create-edu-dapp:
+     ```bash
+     cd create-edu-dapp
+     ```
+
+4. **Create a Branch:**
    - Create a new branch for your changes:
      ```bash
      git checkout -b my-new-feature
      ```
 
-4. **Make Your Changes:**
+5. **Make Your Changes:**
    - Make your changes to the code or documentation.
 
-5. **Commit Your Changes:**
+6. **Commit Your Changes:**
    - Commit your changes with a descriptive commit message:
      ```bash
      git add .
      git commit -m "Add new feature"
      ```
 
-6. **Push Your Changes:**
+7. **Push Your Changes:**
    - Push your changes to your forked repository:
      ```bash
      git push origin my-new-feature
      ```
 
-7. **Create a Pull Request:**
+8. **Create a Pull Request:**
    - Go to the original repository and open a pull request from your forked repository.
 
 ### 3. Code Reviews

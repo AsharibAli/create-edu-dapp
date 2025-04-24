@@ -1,5 +1,7 @@
 # Nuxt 3 Minimal Starter
 
+**Important Note**: This project uses only MetaMask for authentication and does not include the OpenCampus OCID library integration. Authentication is handled solely through MetaMask wallet connection.
+
 Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
 ## Setup
