@@ -5,12 +5,13 @@
 <h1 align="center">EduKit | create-edu-dapp</h1>
 
 <div align="center">
-    <img src="https://img.shields.io/badge/platform-opencampus-teal.svg?style=flat-square" alt="Platform">
+    <img src="https://img.shields.io/badge/platform-educhain-teal.svg?style=flat-square" alt="Platform">
     <img src="https://img.shields.io/github/license/asharibali/create-edu-dapp?color=teal&style=flat-square " alt="License">
     <img src="https://img.shields.io/npm/v/create-edu-dapp?color=teal" alt="NPM Version">
+    <img src="https://img.shields.io/npm/dt/create-edu-dapp?color=teal" alt="NPM Downloads">
 </div><br>
 
-A starter-kit featuring **React & NextJS and Vue & NuxtJS**, designed for building `dApps`, and for developing, deploying, testing, and verifying Solidity smart contracts on the Open Campus L3 **(EduChain)**. The starter kit comes pre-configured with **six example dApps** and includes essential tools and libraries such as `create-next-app`, `Hardhat`, `Foundry`, `TypeScript`, `Tailwind CSS`, `shadcn-ui`, `web3.js`, `Open Campus ID`, and more.
+A starter-kit featuring **React & NextJS | Vue & NuxtJS | React & Remix**, designed for building `dApps`, and for developing, deploying, testing, and verifying Solidity smart contracts on the Open Campus L3 **(EduChain)**. The starter kit comes pre-configured with **six example dApps** and includes essential tools and libraries such as `create-next-app`, `Hardhat`, `Foundry`, `TypeScript`, `Tailwind CSS`, `shadcn-ui`, `web3.js`, `Open Campus ID`, and more.
 
 <table align="center">
   <tr>
@@ -61,6 +62,7 @@ A starter-kit featuring **React & NextJS and Vue & NuxtJS**, designed for buildi
 Choose your preferred implementation:
 - **React and NextJS with Hardhat or Foundry**
 - **Vue and NuxtJS with Hardhat or Foundry**
+- **React and Remix with Hardhat or Foundry**
 
 ### 📦 Installation
 
@@ -120,11 +122,11 @@ npx hardhat test
 
 ### ⛓️ Deploy
 
-Before deploying the smart contracts, ensure that you have added the [`Open Campus Codex`](https://devdocs.opencampus.xyz/getting-started) to your MetaMask wallet and that it has sufficient funds. If you do not have testnet $EDU on Open Campus Codex, please follow this [faucets guide](https://devdocs.opencampus.xyz/build/faucet).
+Before deploying the smart contracts, ensure that you have added the [`EDU Chain Testnet`](https://chainlist.org/chain/656476) to your MetaMask wallet and that it has sufficient funds. If you do not have testnet $EDU on EDU Chain Testnet, please follow this [faucets guide](https://devdocs.opencampus.xyz/build/faucet).
 
 Also, make changes in `./scripts/deploy.ts` (replace the greeter contract name with `<your-contract-name>`).
 
-For deploying the smart contracts to `open campus codex` network, type the following command:
+For deploying the smart contracts to `educhain-testnet` network, type the following command:
 
 ```sh
 # For deploying the smart contracts
@@ -141,7 +143,7 @@ npx hardhat run scripts/deploy.ts --network educhain-testnet
 
 ### ✅ Verify
 
-To verify the deployed smart contract on `Open Campus Codex`, execute the following command:
+To verify the deployed smart contract on `EDU Chain Testnet`, execute the following command:
 
 ```sh
 # For verifying the smart contracts
@@ -189,11 +191,11 @@ forge test
 
 ### ⛓️ Deploy
 
-Before deploying the smart contracts, ensure that you have added the [`Open Campus Codex`](https://devdocs.opencampus.xyz/getting-started) to your MetaMask wallet and that it has sufficient funds. If you do not have testnet $EDU on Open Campus Codex, please follow this [faucets guide](https://devdocs.opencampus.xyz/build/faucet).
+Before deploying the smart contracts, ensure that you have added the [`EDU Chain Testnet`](https://chainlist.org/chain/656476) to your MetaMask wallet and that it has sufficient funds. If you do not have testnet $EDU on EDU Chain Testnet, please follow this [faucets guide](https://devdocs.opencampus.xyz/build/faucet).
 
 Also, make changes in `./script/DeployGreeter.s.sol` (replace the deploy greeter contract name with `<your-contract-name>`).
 
-For deploying the smart contracts to `open campus codex` network, type the following command:
+For deploying the smart contracts to `educhain-testnet` network, type the following command:
 
 ```sh
 # For deploying the smart contracts
@@ -210,7 +212,7 @@ forge script script/DeployGreeter.s.sol --broadcast --rpc-url https://rpc.open-c
 
 ### ✅ Verify
 
-To verify the deployed smart contract on `Open Campus Codex`, execute the following command:
+To verify the deployed smart contract on `EDU Chain Testnet`, execute the following command:
 
 ```sh
 # For verifying the smart contracts
