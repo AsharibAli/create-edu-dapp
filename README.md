@@ -11,7 +11,7 @@
     <img src="https://img.shields.io/npm/dt/create-edu-dapp?color=teal" alt="NPM Downloads">
 </div><br>
 
-A starter-kit featuring **React & NextJS | Vue & NuxtJS | React & Remix**, designed for building `dApps`, and for developing, deploying, testing, and verifying Solidity smart contracts on the Open Campus L3 **(EduChain)**. The starter kit comes pre-configured with **six example dApps** and includes essential tools and libraries such as `create-next-app`, `Hardhat`, `Foundry`, `TypeScript`, `Tailwind CSS`, `shadcn-ui`, `web3.js`, `Open Campus ID`, and more.
+A starter-kit featuring **React & NextJS | Vue & NuxtJS | Vite & RemixJS**, designed for building `dApps`, and for developing, deploying, testing, and verifying Solidity smart contracts on the Open Campus L3 **(EduChain)**. The starter kit comes pre-configured with **six example dApps** and includes essential tools and libraries such as `create-next-app`, `Hardhat`, `Foundry`, `TypeScript`, `Tailwind CSS`, `shadcn-ui`, `web3.js`, `Open Campus ID`, and more.
 
 <table align="center">
   <tr>
@@ -62,7 +62,7 @@ A starter-kit featuring **React & NextJS | Vue & NuxtJS | React & Remix**, desig
 Choose your preferred implementation:
 - **React and NextJS with Hardhat or Foundry**
 - **Vue and NuxtJS with Hardhat or Foundry**
-- **React and Remix with Hardhat or Foundry**
+- **Vite and RemixJS with Hardhat or Foundry**
 
 ### 📦 Installation
 

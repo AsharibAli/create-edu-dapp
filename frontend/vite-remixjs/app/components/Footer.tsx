@@ -11,7 +11,7 @@ const Footer = () => {
           height={50}
         />
         <h1 className="text-xl text-black">
-          Build with ❤️ by{" "}
+          Build with 💙 by{" "}
           <strong>
             <a
               href="https://eduhub.dev/"
