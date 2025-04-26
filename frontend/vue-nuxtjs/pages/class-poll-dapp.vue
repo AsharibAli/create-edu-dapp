@@ -11,15 +11,6 @@
           </CardTitle>
         </CardHeader>
         <CardContent class="flex flex-col items-center mt-4 space-y-6">
-          <LoginButton v-if="!ocidUsername" />
-          <div v-if="ocidUsername" class="text-center text-xl">
-            <h1>
-              👉Welcome,
-              <NuxtLink to="/user">
-                <strong>{{ ocidUsername }}</strong> </NuxtLink
-              >👈
-            </h1>
-          </div>
           <div v-if="isConnected" class="text-center text-xl">
             <h1>
               Connected to wallet address: <strong>{{ accountAddress }}</strong>
@@ -106,11 +97,6 @@ import { Input } from "@/components/ui/input";
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
 
-interface DecodedToken {
-  edu_username: string;
-  [key: string]: any;
-}
-
 interface Poll {
   question: string;
   options: string[];
@@ -126,7 +112,6 @@ const contract = ref<any>(undefined);
 const loading = ref(false);
 const txnHash = ref<string | null>(null);
 const showMessage = ref(false);
-const ocidUsername = ref<string | null>(null);
 const currentPoll = ref<Poll | null>(null);
 const newQuestion = ref("");
 const newOptions = ref(["", "", ""]);
@@ -191,6 +176,8 @@ const connectWallet = async () => {
       accountAddress.value = accounts[0];
       mmStatus.value = "Connected!";
       isConnected.value = true;
+
+      localStorage.setItem("walletAddress", accounts[0]);
     } catch (error) {
       console.error("Failed to connect to wallet:", error);
     }
@@ -200,6 +187,17 @@ const connectWallet = async () => {
 };
 
 onMounted(() => {
+  const storedAddress = localStorage.getItem("walletAddress");
+  if (storedAddress && typeof window.ethereum !== "undefined") {
+    window.ethereum.request({ method: "eth_accounts" }).then((accounts) => {
+      if (accounts.length > 0 && accounts[0] === storedAddress) {
+        accountAddress.value = storedAddress;
+        mmStatus.value = "Connected!";
+        isConnected.value = true;
+      }
+    });
+  }
+
   if (typeof window.ethereum !== "undefined") {
     const web3Instance = new Web3(window.ethereum);
     web3.value = web3Instance;

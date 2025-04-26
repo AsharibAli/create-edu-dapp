@@ -11,15 +11,6 @@
           </CardTitle>
         </CardHeader>
         <CardContent class="flex flex-col items-center mt-4 space-y-6">
-          <LoginButton v-if="!ocidUsername" />
-          <div v-if="ocidUsername" class="text-center text-xl">
-            <h1>
-              👉Welcome,
-              <NuxtLink to="/user">
-                <strong>{{ ocidUsername }}</strong> </NuxtLink
-              >👈
-            </h1>
-          </div>
           <div v-if="isConnected" class="text-center text-xl">
             <h1>
               Connected to wallet address: <strong>{{ accountAddress }}</strong>
@@ -89,11 +80,6 @@ import { Button } from "@/components/ui/button";
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
 
-interface DecodedToken {
-  edu_username: string;
-  [key: string]: any;
-}
-
 const contractAddress = "0x4592d03bf91Ba5667F2C064A3CC122917EC41f1F";
 const mmStatus = ref("Not connected!");
 const isConnected = ref(false);
@@ -103,7 +89,6 @@ const contract = ref<any>(undefined);
 const loading = ref(false);
 const txnHash = ref<string | null>(null);
 const showMessage = ref(false);
-const ocidUsername = ref<string | null>(null);
 const isStudying = ref(false);
 const studyTime = ref(0);
 const totalStudyTime = ref(0);
@@ -181,7 +166,6 @@ const connectWallet = async () => {
 };
 
 onMounted(() => {
-  // Check local storage for wallet connection
   const storedAddress = localStorage.getItem("walletAddress");
   if (storedAddress) {
     accountAddress.value = storedAddress;
@@ -189,7 +173,6 @@ onMounted(() => {
     mmStatus.value = "Connected!";
   }
 
-  // Initialize Web3 and set contract
   if (typeof window.ethereum !== "undefined") {
     const web3Instance = new Web3(window.ethereum);
     web3.value = web3Instance;
@@ -200,7 +183,6 @@ onMounted(() => {
     contract.value = StudyTracker;
     StudyTracker.setProvider(window.ethereum);
 
-    // Check if already connected
     if (storedAddress) {
       web3Instance.eth.getAccounts().then((accounts) => {
         if (accounts[0] === storedAddress) {
@@ -208,7 +190,6 @@ onMounted(() => {
           isConnected.value = true;
           mmStatus.value = "Connected!";
         } else {
-          // Clear stored address if it doesn't match current account
           localStorage.removeItem("walletAddress");
           isConnected.value = false;
           mmStatus.value = "Not connected!";
@@ -217,13 +198,11 @@ onMounted(() => {
     }
   }
 
-  // Set up event listeners for MetaMask
   if (window.ethereum) {
     window.ethereum.on("accountsChanged", handleAccountsChanged);
     window.ethereum.on("chainChanged", () => window.location.reload());
   }
 
-  // Start the study timer if it was running
   const storedStartTime = localStorage.getItem("studyStartTime");
   if (storedStartTime) {
     startTime.value = parseInt(storedStartTime);
@@ -236,7 +215,6 @@ onMounted(() => {
 
 const handleAccountsChanged = (accounts: string[]) => {
   if (accounts.length === 0) {
-    // MetaMask is locked or the user has not connected any accounts
     isConnected.value = false;
     mmStatus.value = "Not connected!";
     localStorage.removeItem("walletAddress");

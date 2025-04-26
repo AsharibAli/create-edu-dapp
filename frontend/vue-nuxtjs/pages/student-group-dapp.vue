@@ -11,15 +11,6 @@
           </CardTitle>
         </CardHeader>
         <CardContent class="flex flex-col items-center mt-4 space-y-6">
-          <LoginButton v-if="!ocidUsername" />
-          <div v-if="ocidUsername" class="text-center text-xl">
-            <h1>
-              👉Welcome,
-              <NuxtLink to="/user">
-                <strong>{{ ocidUsername }}</strong> </NuxtLink
-              >👈
-            </h1>
-          </div>
           <div v-if="isConnected" class="text-center text-xl">
             <h1>
               Connected to wallet address: <strong>{{ account }}</strong>
@@ -94,11 +85,6 @@ interface Message {
   timestamp: number;
 }
 
-interface DecodedToken {
-  edu_username: string;
-  [key: string]: any;
-}
-
 const contractAddress = "0x158f83cD37e7774b520ADCb9BD7bc80330378c1B";
 
 const { toast } = useToast();
@@ -109,7 +95,6 @@ const account = ref("");
 const isMember = ref(false);
 const messages = ref<Message[]>([]);
 const newMessage = ref("");
-const ocidUsername = ref<string | null>(null);
 const mmStatus = ref("Not connected!");
 const isConnected = ref(false);
 const getNetwork = ref<number | undefined>(undefined);
@@ -176,6 +161,10 @@ const connectWallet = async () => {
       account.value = accounts[0];
       mmStatus.value = "Connected!";
       isConnected.value = true;
+
+      localStorage.setItem("walletAddress", accounts[0]);
+
+      initWeb3();
     } catch (error) {
       console.error("Failed to connect to wallet:", error);
     }
@@ -190,7 +179,6 @@ const initWeb3 = async () => {
     web3.value = web3Instance;
 
     try {
-      await window.ethereum.request({ method: "eth_requestAccounts" });
       const accounts = await web3Instance.eth.getAccounts();
       account.value = accounts[0];
 
@@ -207,11 +195,11 @@ const initWeb3 = async () => {
 
       await loadMessages();
     } catch (error) {
-      console.error("Failed to connect to wallet:", error);
+      console.error("Failed to initialize web3:", error);
       toast({
         title: "Error",
         description:
-          "Failed to connect to wallet. Please make sure MetaMask is installed and unlocked.",
+          "Failed to initialize web3. Please make sure MetaMask is installed and unlocked.",
         variant: "destructive",
       });
     }
@@ -274,6 +262,22 @@ const sendMessage = async () => {
   }
 };
 
+onMounted(() => {
+  const storedAddress = localStorage.getItem("walletAddress");
+  if (storedAddress && typeof window.ethereum !== "undefined") {
+    window.ethereum.request({ method: "eth_accounts" }).then((accounts) => {
+      if (accounts.length > 0 && accounts[0] === storedAddress) {
+        account.value = storedAddress;
+        mmStatus.value = "Connected!";
+        isConnected.value = true;
+        initWeb3();
+      } else {
+        localStorage.removeItem("walletAddress");
+      }
+    });
+  }
+});
+
 watch(
   () => window.ethereum,
   (newEthereum) => {
@@ -285,8 +289,10 @@ watch(
         if (accounts.length === 0) {
           isConnected.value = false;
           account.value = "";
+          localStorage.removeItem("walletAddress");
         } else {
           account.value = accounts[0];
+          localStorage.setItem("walletAddress", accounts[0]);
           initWeb3();
         }
       });

@@ -11,15 +11,6 @@
           </CardTitle>
         </CardHeader>
         <CardContent class="flex flex-col items-center mt-4 space-y-6">
-          <LoginButton v-if="!ocidUsername" />
-          <div v-if="ocidUsername" class="text-center text-xl">
-            <h1>
-              👉Welcome,
-              <NuxtLink to="/user">
-                <strong>{{ ocidUsername }}</strong> </NuxtLink
-              >👈
-            </h1>
-          </div>
           <div v-if="isConnected" class="text-center text-xl">
             <h1>
               Connected to wallet address: <strong>{{ accountAddress }}</strong>
@@ -94,7 +85,8 @@
             <AlertTitle>Student View</AlertTitle>
             <AlertDescription>
               As a student, you can submit assignments but cannot view all
-              submissions, only educators with ocid (edu_) can see it.
+              submissions. Only educators with authorized wallet addresses can
+              see all submissions.
             </AlertDescription>
           </Alert>
         </CardContent>
@@ -105,7 +97,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 import Web3 from "web3";
 import contractJson from "@/contracts/AssignmentSubmission.sol/AssignmentSubmission.json";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -115,11 +107,6 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-vue-next";
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
-
-interface DecodedToken {
-  edu_username: string;
-  [key: string]: any;
-}
 
 interface Submission {
   student: string;
@@ -134,13 +121,27 @@ const isConnected = ref(false);
 const accountAddress = ref<string | undefined>(undefined);
 const web3 = ref<Web3 | undefined>(undefined);
 const contract = ref<any>(undefined);
-const ocidUsername = ref<string | null>(null);
 const assignmentHash = ref("");
 const submissions = ref<Submission[]>([]);
 const loading = ref(false);
 const txnHash = ref<string | null>(null);
 const showMessage = ref(false);
 const isEducator = ref(false);
+
+const educatorAddresses = [
+  "0x123456789abcdef0123456789abcdef012345678",
+  "0x987654321fedcba0987654321fedcba098765432",
+];
+
+const checkEducatorRole = () => {
+  if (accountAddress.value) {
+    isEducator.value = educatorAddresses.includes(
+      accountAddress.value.toLowerCase()
+    );
+  } else {
+    isEducator.value = false;
+  }
+};
 
 const switchToOpenCampusNetwork = async () => {
   if (typeof window.ethereum !== "undefined") {
@@ -201,6 +202,14 @@ const connectWallet = async () => {
       accountAddress.value = accounts[0];
       mmStatus.value = "Connected!";
       isConnected.value = true;
+
+      localStorage.setItem("walletAddress", accounts[0]);
+
+      checkEducatorRole();
+
+      if (isEducator.value) {
+        fetchSubmissions();
+      }
     } catch (error) {
       console.error("Failed to connect to wallet:", error);
     }
@@ -210,6 +219,8 @@ const connectWallet = async () => {
 };
 
 onMounted(() => {
+  const storedAddress = localStorage.getItem("walletAddress");
+
   if (typeof window.ethereum !== "undefined") {
     const web3Instance = new Web3(window.ethereum);
     web3.value = web3Instance;
@@ -220,6 +231,40 @@ onMounted(() => {
     );
     contract.value = AssignmentSubmission;
     AssignmentSubmission.setProvider(window.ethereum);
+
+    if (storedAddress) {
+      window.ethereum.request({ method: "eth_accounts" }).then((accounts) => {
+        if (accounts.length > 0 && accounts[0] === storedAddress) {
+          accountAddress.value = storedAddress;
+          mmStatus.value = "Connected!";
+          isConnected.value = true;
+
+          checkEducatorRole();
+
+          if (isEducator.value) {
+            fetchSubmissions();
+          }
+        } else {
+          localStorage.removeItem("walletAddress");
+        }
+      });
+    }
+
+    window.ethereum.on("accountsChanged", (accounts) => {
+      if (accounts.length === 0) {
+        accountAddress.value = undefined;
+        isConnected.value = false;
+        isEducator.value = false;
+        localStorage.removeItem("walletAddress");
+      } else {
+        accountAddress.value = accounts[0];
+        localStorage.setItem("walletAddress", accounts[0]);
+        checkEducatorRole();
+        if (isEducator.value) {
+          fetchSubmissions();
+        }
+      }
+    });
   } else {
     alert("Please install MetaMask!");
   }
@@ -240,7 +285,9 @@ const submitAssignment = async () => {
         .on("transactionHash", (hash: string) => {
           txnHash.value = hash;
         });
-      await fetchSubmissions();
+      if (isEducator.value) {
+        await fetchSubmissions();
+      }
       assignmentHash.value = "";
     } catch (error) {
       console.error("Failed to submit assignment:", error);
@@ -288,10 +335,4 @@ const verifySubmission = async (index: number) => {
     }
   }
 };
-
-onMounted(() => {
-  if (contract.value && isEducator.value) {
-    fetchSubmissions();
-  }
-});
 </script>
