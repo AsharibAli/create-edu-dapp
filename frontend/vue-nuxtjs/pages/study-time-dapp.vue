@@ -166,7 +166,6 @@ const connectWallet = async () => {
 };
 
 onMounted(() => {
-  // Check local storage for wallet connection
   const storedAddress = localStorage.getItem("walletAddress");
   if (storedAddress) {
     accountAddress.value = storedAddress;
@@ -174,7 +173,6 @@ onMounted(() => {
     mmStatus.value = "Connected!";
   }
 
-  // Initialize Web3 and set contract
   if (typeof window.ethereum !== "undefined") {
     const web3Instance = new Web3(window.ethereum);
     web3.value = web3Instance;
@@ -185,7 +183,6 @@ onMounted(() => {
     contract.value = StudyTracker;
     StudyTracker.setProvider(window.ethereum);
 
-    // Check if already connected
     if (storedAddress) {
       web3Instance.eth.getAccounts().then((accounts) => {
         if (accounts[0] === storedAddress) {
@@ -193,7 +190,6 @@ onMounted(() => {
           isConnected.value = true;
           mmStatus.value = "Connected!";
         } else {
-          // Clear stored address if it doesn't match current account
           localStorage.removeItem("walletAddress");
           isConnected.value = false;
           mmStatus.value = "Not connected!";
@@ -202,13 +198,11 @@ onMounted(() => {
     }
   }
 
-  // Set up event listeners for MetaMask
   if (window.ethereum) {
     window.ethereum.on("accountsChanged", handleAccountsChanged);
     window.ethereum.on("chainChanged", () => window.location.reload());
   }
 
-  // Start the study timer if it was running
   const storedStartTime = localStorage.getItem("studyStartTime");
   if (storedStartTime) {
     startTime.value = parseInt(storedStartTime);
@@ -221,7 +215,6 @@ onMounted(() => {
 
 const handleAccountsChanged = (accounts: string[]) => {
   if (accounts.length === 0) {
-    // MetaMask is locked or the user has not connected any accounts
     isConnected.value = false;
     mmStatus.value = "Not connected!";
     localStorage.removeItem("walletAddress");

@@ -157,7 +157,6 @@ const connectWallet = async () => {
       mmStatus.value = "Connected!";
       isConnected.value = true;
 
-      // Store wallet address in localStorage
       localStorage.setItem("walletAddress", accounts[0]);
     } catch (error) {
       console.error("Failed to connect to wallet:", error);
@@ -168,7 +167,6 @@ const connectWallet = async () => {
 };
 
 onMounted(() => {
-  // Check if wallet was previously connected
   const storedAddress = localStorage.getItem("walletAddress");
 
   if (typeof window.ethereum !== "undefined") {
@@ -182,30 +180,24 @@ onMounted(() => {
     contract.value = Greeter;
     Greeter.setProvider(window.ethereum);
 
-    // If stored address exists, check if wallet is still connected
     if (storedAddress) {
       window.ethereum.request({ method: "eth_accounts" }).then((accounts) => {
         if (accounts.length > 0 && accounts[0] === storedAddress) {
-          // Wallet is still connected
           accountAddress.value = storedAddress;
           mmStatus.value = "Connected!";
           isConnected.value = true;
         } else {
-          // Wallet disconnected or changed
           localStorage.removeItem("walletAddress");
         }
       });
     }
 
-    // Setup MetaMask event listeners
     window.ethereum.on("accountsChanged", (accounts) => {
       if (accounts.length === 0) {
-        // User disconnected wallet
         accountAddress.value = undefined;
         isConnected.value = false;
         localStorage.removeItem("walletAddress");
       } else {
-        // Account changed
         accountAddress.value = accounts[0];
         localStorage.setItem("walletAddress", accounts[0]);
       }

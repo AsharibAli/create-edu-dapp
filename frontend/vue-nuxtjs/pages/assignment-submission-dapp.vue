@@ -128,14 +128,11 @@ const txnHash = ref<string | null>(null);
 const showMessage = ref(false);
 const isEducator = ref(false);
 
-// List of educator wallet addresses (replace with your actual authorized educators)
 const educatorAddresses = [
-  "0x123456789abcdef0123456789abcdef012345678", // Example address
-  "0x987654321fedcba0987654321fedcba098765432", // Example address
-  // Add more educator addresses as needed
+  "0x123456789abcdef0123456789abcdef012345678",
+  "0x987654321fedcba0987654321fedcba098765432",
 ];
 
-// Check if the connected wallet belongs to an educator
 const checkEducatorRole = () => {
   if (accountAddress.value) {
     isEducator.value = educatorAddresses.includes(
@@ -206,13 +203,10 @@ const connectWallet = async () => {
       mmStatus.value = "Connected!";
       isConnected.value = true;
 
-      // Store wallet address for persistence
       localStorage.setItem("walletAddress", accounts[0]);
 
-      // Check if the connected wallet has educator permissions
       checkEducatorRole();
 
-      // If it's an educator, fetch submissions
       if (isEducator.value) {
         fetchSubmissions();
       }
@@ -225,7 +219,6 @@ const connectWallet = async () => {
 };
 
 onMounted(() => {
-  // Check if wallet was previously connected
   const storedAddress = localStorage.getItem("walletAddress");
 
   if (typeof window.ethereum !== "undefined") {
@@ -239,39 +232,31 @@ onMounted(() => {
     contract.value = AssignmentSubmission;
     AssignmentSubmission.setProvider(window.ethereum);
 
-    // If stored address exists, check if wallet is still connected
     if (storedAddress) {
       window.ethereum.request({ method: "eth_accounts" }).then((accounts) => {
         if (accounts.length > 0 && accounts[0] === storedAddress) {
-          // Wallet is still connected
           accountAddress.value = storedAddress;
           mmStatus.value = "Connected!";
           isConnected.value = true;
 
-          // Check if the wallet has educator permissions
           checkEducatorRole();
 
-          // If it's an educator, fetch submissions
           if (isEducator.value) {
             fetchSubmissions();
           }
         } else {
-          // Wallet disconnected or changed, remove from storage
           localStorage.removeItem("walletAddress");
         }
       });
     }
 
-    // Setup MetaMask event listeners
     window.ethereum.on("accountsChanged", (accounts) => {
       if (accounts.length === 0) {
-        // User disconnected wallet
         accountAddress.value = undefined;
         isConnected.value = false;
         isEducator.value = false;
         localStorage.removeItem("walletAddress");
       } else {
-        // Account changed
         accountAddress.value = accounts[0];
         localStorage.setItem("walletAddress", accounts[0]);
         checkEducatorRole();

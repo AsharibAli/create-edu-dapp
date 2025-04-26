@@ -162,10 +162,8 @@ const connectWallet = async () => {
       mmStatus.value = "Connected!";
       isConnected.value = true;
 
-      // Store wallet address in localStorage for persistence
       localStorage.setItem("walletAddress", accounts[0]);
 
-      // Initialize web3 and contract
       initWeb3();
     } catch (error) {
       console.error("Failed to connect to wallet:", error);
@@ -265,7 +263,6 @@ const sendMessage = async () => {
 };
 
 onMounted(() => {
-  // Check if wallet was previously connected
   const storedAddress = localStorage.getItem("walletAddress");
   if (storedAddress && typeof window.ethereum !== "undefined") {
     window.ethereum.request({ method: "eth_accounts" }).then((accounts) => {
