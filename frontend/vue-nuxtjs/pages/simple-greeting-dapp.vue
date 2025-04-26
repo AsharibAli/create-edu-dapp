@@ -11,15 +11,6 @@
           </CardTitle>
         </CardHeader>
         <CardContent class="flex flex-col items-center mt-4 space-y-6">
-          <LoginButton v-if="!ocidUsername" />
-          <div v-if="ocidUsername" class="text-center text-xl">
-            <h1>
-              👉Welcome,
-              <NuxtLink to="/user">
-                <strong>{{ ocidUsername }}</strong> </NuxtLink
-              >👈
-            </h1>
-          </div>
           <div v-if="isConnected" class="text-center text-xl">
             <h1>
               Connected to wallet address: <strong>{{ accountAddress }}</strong>
@@ -94,11 +85,6 @@ import { Input } from "@/components/ui/input";
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
 
-interface DecodedToken {
-  edu_username: string;
-  [key: string]: any;
-}
-
 const contractAddress = "0x48D2d71e26931a68A496F66d83Ca2f209eA9956E";
 const mmStatus = ref("Not connected!");
 const isConnected = ref(false);
@@ -109,7 +95,6 @@ const contract = ref<any>(undefined);
 const loading = ref(false);
 const txnHash = ref<string | null>(null);
 const showMessage = ref(false);
-const ocidUsername = ref<string | null>(null);
 const message = ref("");
 
 const switchToOpenCampusNetwork = async () => {
@@ -171,6 +156,9 @@ const connectWallet = async () => {
       accountAddress.value = accounts[0];
       mmStatus.value = "Connected!";
       isConnected.value = true;
+
+      // Store wallet address in localStorage
+      localStorage.setItem("walletAddress", accounts[0]);
     } catch (error) {
       console.error("Failed to connect to wallet:", error);
     }
@@ -180,6 +168,9 @@ const connectWallet = async () => {
 };
 
 onMounted(() => {
+  // Check if wallet was previously connected
+  const storedAddress = localStorage.getItem("walletAddress");
+
   if (typeof window.ethereum !== "undefined") {
     const web3Instance = new Web3(window.ethereum);
     web3.value = web3Instance;
@@ -190,6 +181,35 @@ onMounted(() => {
     );
     contract.value = Greeter;
     Greeter.setProvider(window.ethereum);
+
+    // If stored address exists, check if wallet is still connected
+    if (storedAddress) {
+      window.ethereum.request({ method: "eth_accounts" }).then((accounts) => {
+        if (accounts.length > 0 && accounts[0] === storedAddress) {
+          // Wallet is still connected
+          accountAddress.value = storedAddress;
+          mmStatus.value = "Connected!";
+          isConnected.value = true;
+        } else {
+          // Wallet disconnected or changed
+          localStorage.removeItem("walletAddress");
+        }
+      });
+    }
+
+    // Setup MetaMask event listeners
+    window.ethereum.on("accountsChanged", (accounts) => {
+      if (accounts.length === 0) {
+        // User disconnected wallet
+        accountAddress.value = undefined;
+        isConnected.value = false;
+        localStorage.removeItem("walletAddress");
+      } else {
+        // Account changed
+        accountAddress.value = accounts[0];
+        localStorage.setItem("walletAddress", accounts[0]);
+      }
+    });
   } else {
     alert("Please install MetaMask!");
   }

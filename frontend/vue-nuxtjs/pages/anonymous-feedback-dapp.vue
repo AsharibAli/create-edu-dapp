@@ -11,15 +11,6 @@
           </CardTitle>
         </CardHeader>
         <CardContent class="flex flex-col items-center mt-4 space-y-6">
-          <LoginButton v-if="!ocidUsername" />
-          <div v-if="ocidUsername" class="text-center text-xl">
-            <h1>
-              👉Welcome,
-              <NuxtLink to="/user">
-                <strong>{{ ocidUsername }}</strong> </NuxtLink
-              >👈
-            </h1>
-          </div>
           <div v-if="isConnected" class="text-center text-xl">
             <h1>
               Connected to wallet address: <strong>{{ accountAddress }}</strong>
@@ -90,8 +81,8 @@
             <AlertTitle>Student View</AlertTitle>
             <AlertDescription>
               As a student, you can submit anonymous feedbacks about the courses
-              but cannot view all feedback submissions, only educators with ocid
-              (edu_) can see it.
+              but cannot view all feedback submissions, only educators with
+              authorized wallet addresses can see it.
             </AlertDescription>
           </Alert>
         </CardContent>
@@ -112,7 +103,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-vue-next";
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
-import type { DecodedToken, Contracts } from "@/types";
+import type { Contracts } from "@/types";
 
 const contractAddress = "0x5E953eF799f59D2589b72c19c05A7e02EAbcdf0C";
 const mmStatus = ref("Not connected!");
@@ -126,8 +117,25 @@ const contracts = ref<Contracts | undefined>(undefined);
 const loading = ref(false);
 const txnHash = ref<string | null>(null);
 const showMessage = ref(false);
-const ocidUsername = ref<string | null>(null);
 const isEducator = ref(false);
+
+// List of educator wallet addresses
+const educatorAddresses = [
+  "0x123456789abcdef0123456789abcdef012345678", // Example address, replace with actual
+  "0x987654321fedcba0987654321fedcba098765432", // Example address, replace with actual
+  // Add more educator addresses as needed
+];
+
+// Check if the connected wallet belongs to an educator
+const checkEducatorRole = () => {
+  if (accountAddress.value) {
+    isEducator.value = educatorAddresses.includes(
+      accountAddress.value.toLowerCase()
+    );
+  } else {
+    isEducator.value = false;
+  }
+};
 
 const switchToOpenCampusNetwork = async () => {
   if (typeof window.ethereum !== "undefined") {
@@ -190,6 +198,12 @@ const connectWallet = async () => {
       accountAddress.value = accounts[0];
       mmStatus.value = "Connected!";
       isConnected.value = true;
+
+      // Store wallet address in localStorage
+      localStorage.setItem("walletAddress", accounts[0]);
+
+      // Check educator role
+      checkEducatorRole();
     } catch (error) {
       console.error("Failed to connect to wallet:", error);
     }
@@ -200,6 +214,9 @@ const connectWallet = async () => {
 
 onMounted(async () => {
   try {
+    // Check if wallet was previously connected
+    const storedAddress = localStorage.getItem("walletAddress");
+
     if (typeof window.ethereum !== "undefined") {
       const web3Instance = new Web3(window.ethereum);
       web3.value = web3Instance;
@@ -211,6 +228,41 @@ onMounted(async () => {
       ) as Contracts;
       contracts.value = AnonymousFeedback;
       AnonymousFeedback.setProvider(window.ethereum);
+
+      // If stored address exists, check if wallet is still connected
+      if (storedAddress) {
+        const accounts = await window.ethereum.request({
+          method: "eth_accounts",
+        });
+        if (accounts.length > 0 && accounts[0] === storedAddress) {
+          // Wallet is still connected
+          accountAddress.value = storedAddress;
+          mmStatus.value = "Connected!";
+          isConnected.value = true;
+
+          // Check educator role
+          checkEducatorRole();
+        } else {
+          // Wallet disconnected or changed, remove from storage
+          localStorage.removeItem("walletAddress");
+        }
+      }
+
+      // Setup event listeners for MetaMask
+      window.ethereum.on("accountsChanged", (accounts) => {
+        if (accounts.length === 0) {
+          // User disconnected wallet
+          accountAddress.value = undefined;
+          isConnected.value = false;
+          isEducator.value = false;
+          localStorage.removeItem("walletAddress");
+        } else {
+          // Account changed
+          accountAddress.value = accounts[0];
+          localStorage.setItem("walletAddress", accounts[0]);
+          checkEducatorRole();
+        }
+      });
     } else {
       alert("Please install MetaMask!");
     }

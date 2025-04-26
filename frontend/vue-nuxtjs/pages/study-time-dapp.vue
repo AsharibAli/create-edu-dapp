@@ -11,15 +11,6 @@
           </CardTitle>
         </CardHeader>
         <CardContent class="flex flex-col items-center mt-4 space-y-6">
-          <LoginButton v-if="!ocidUsername" />
-          <div v-if="ocidUsername" class="text-center text-xl">
-            <h1>
-              👉Welcome,
-              <NuxtLink to="/user">
-                <strong>{{ ocidUsername }}</strong> </NuxtLink
-              >👈
-            </h1>
-          </div>
           <div v-if="isConnected" class="text-center text-xl">
             <h1>
               Connected to wallet address: <strong>{{ accountAddress }}</strong>
@@ -89,11 +80,6 @@ import { Button } from "@/components/ui/button";
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
 
-interface DecodedToken {
-  edu_username: string;
-  [key: string]: any;
-}
-
 const contractAddress = "0x4592d03bf91Ba5667F2C064A3CC122917EC41f1F";
 const mmStatus = ref("Not connected!");
 const isConnected = ref(false);
@@ -103,7 +89,6 @@ const contract = ref<any>(undefined);
 const loading = ref(false);
 const txnHash = ref<string | null>(null);
 const showMessage = ref(false);
-const ocidUsername = ref<string | null>(null);
 const isStudying = ref(false);
 const studyTime = ref(0);
 const totalStudyTime = ref(0);

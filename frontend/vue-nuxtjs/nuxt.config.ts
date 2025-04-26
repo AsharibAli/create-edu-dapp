@@ -23,13 +23,16 @@ export default defineNuxtConfig({
       ],
     },
   },
+
   css: ["~/assets/css/tailwind.css"],
   modules: ["@nuxtjs/tailwindcss", "shadcn-nuxt", "@nuxtjs/google-fonts"],
+
   googleFonts: {
     families: {
       Inter: true,
     },
   },
+
   tailwindcss: {
     cssPath: "~/assets/css/tailwind.css",
     configPath: "tailwind.config.js",
@@ -37,6 +40,7 @@ export default defineNuxtConfig({
     injectPosition: 0,
     viewer: true,
   },
+
   shadcn: {
     /**
      * Prefix for all the imported component
@@ -48,9 +52,15 @@ export default defineNuxtConfig({
      */
     componentDir: "./components/ui",
   },
+
   typescript: {
     strict: false,
   },
+
   build: {},
-  ssr: false, // Disable server-side rendering if your app relies heavily on client-side features
+
+  // Disable server-side rendering if your app relies heavily on client-side features
+  ssr: false,
+
+  compatibilityDate: "2025-04-26"
 });
