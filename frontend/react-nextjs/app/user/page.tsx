@@ -26,8 +26,19 @@ interface DecodedToken {
 }
 
 const UserPage = () => {
-  const { authState } = useOCAuth();
+  const { isInitialized, authState } = useOCAuth();
   const router = useRouter();
+
+  if (!isInitialized) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="text-center">
+          <h1 className="text-xl font-bold mb-4">Loading...</h1>
+          <p>Please wait while we initialize authentication.</p>
+        </div>
+      </div>
+    );
+  }
 
   if (authState.error) {
     return (
@@ -74,10 +85,9 @@ const UserPage = () => {
             {userInfo && (
               <CardContent>
                 <div>
-
                   <p>
                     <strong>User ID:</strong> {userInfo.user_id}
-                  </p>            
+                  </p>
                   <p>
                     <strong>(OCID) Username:</strong> {userInfo.edu_username}
                   </p>
@@ -98,7 +108,6 @@ const UserPage = () => {
                   <p>
                     <strong>Audience:</strong> {userInfo.aud}
                   </p>
-
                 </div>
               </CardContent>
             )}

@@ -1,39 +1,53 @@
 "use client";
-import { useEffect } from "react";
+
+import { LoginCallBack, useOCAuth } from "@opencampus/ocid-connect-js";
 import { useRouter } from "next/navigation";
-import { useOCAuth } from "@opencampus/ocid-connect-js";
 
-const RedirectPage = () => {
+
+function CustomErrorComponent() {
+  const { authState } = useOCAuth();
+  return (
+    <div className="flex justify-center items-center h-screen">
+      <div className="bg-red-100 p-6 rounded-lg shadow-md max-w-md">
+        <h2 className="text-xl font-bold text-red-600 mb-2">Authentication Error</h2>
+        <p className="text-gray-800">Error logging in: {authState.error?.message}</p>
+      </div>
+    </div>
+  );
+}
+
+
+function CustomLoadingComponent() {
+  return (
+    <div className="flex justify-center items-center h-screen">
+      <div className="text-center">
+        <h1 className="text-xl font-bold mb-4">Authenticating...</h1>
+        <p className="text-gray-600">Please wait while we complete your login</p>
+      </div>
+    </div>
+  );
+}
+
+export default function RedirectPage() {
   const router = useRouter();
-  const { authState, ocAuth } = useOCAuth();
 
+ 
   const loginSuccess = () => {
-    router.push("/user"); // Redirect to user or any other page
+    router.push("/user"); 
   };
 
-  const loginError = () => {
-    router.push("/"); // Redirect to login page or show error message
+
+  const loginError = (error: Error) => {
+    console.error("Login error:", error);
+    router.push("/");
   };
 
-  useEffect(() => {
-    const handleAuth = async () => {
-      try {
-        await ocAuth.handleLoginRedirect();
-        loginSuccess();
-      } catch (error) {
-        loginError();
-      }
-    };
-
-    handleAuth();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ocAuth]);
-
-  if (authState.error) {
-    return <div>Error Logging in: {authState.error.message}</div>;
-  }
-
-  return <div>Loading...</div>;
-};
-
-export default RedirectPage;
+  return (
+    <LoginCallBack
+      errorCallback={loginError}
+      successCallback={loginSuccess}
+      customErrorComponent={CustomErrorComponent}
+      customLoadingComponent={CustomLoadingComponent}
+    />
+  );
+}

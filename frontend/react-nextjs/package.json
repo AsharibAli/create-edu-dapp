@@ -23,7 +23,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@opencampus/ocid-connect-js": "^1.0.1",
+    "@opencampus/ocid-connect-js": "^2.0.3",
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-toast": "^1.2.1",
     "chalk": "^5.3.0",
