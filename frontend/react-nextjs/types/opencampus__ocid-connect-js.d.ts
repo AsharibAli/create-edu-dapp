@@ -1,4 +1,6 @@
 declare module "@opencampus/ocid-connect-js" {
+  import { ReactNode } from "react";
+
   export interface OCConnectProps {
     opts: {
       clientId?: string;
@@ -9,7 +11,7 @@ declare module "@opencampus/ocid-connect-js" {
       sameSite?: boolean;
     };
     sandboxMode?: boolean;
-    children: React.ReactNode;
+    children: ReactNode;
   }
 
   export interface AuthState {
@@ -35,8 +37,15 @@ declare module "@opencampus/ocid-connect-js" {
     ethAddress?: string;
   }
 
+  export interface LoginCallBackProps {
+    errorCallback?: (error: Error) => void;
+    successCallback?: () => void;
+    customErrorComponent?: React.ComponentType<any>;
+    customLoadingComponent?: React.ComponentType<any>;
+  }
+
   export const OCConnect: React.FC<OCConnectProps>;
-  export const LoginCallBack: React.FC<any>;
+  export const LoginCallBack: React.FC<LoginCallBackProps>;
   export function useOCAuth(): UseOCAuthReturn;
   export const OCAuthSandbox: any;
   export const OCAuthLive: any;
