@@ -1,16 +1,17 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Web3 from "web3";
-import contractJson from "@/contracts/ClassPoll.sol/ClassPoll.json";
+import contractABI from "@/contracts/ClassPoll.sol/ClassPoll.json";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import LoginButton from "@/components/LoginButton";
+import { useToast } from "@/components/ui/use-toast";
 import { useOCAuth } from "@opencampus/ocid-connect-js";
 import { jwtDecode } from "jwt-decode";
 import { Contracts } from "@/types";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import LoginButton from "@/components/LoginButton";
 import { MetaMaskConnect } from "@/components/MetaMaskConnect";
 
 interface DecodedToken {
@@ -25,7 +26,8 @@ interface Poll {
 }
 
 const ClassPoll: React.FC = () => {
-  const { authState } = useOCAuth();
+  const { isInitialized, authState } = useOCAuth();
+  const { toast } = useToast();
   const [web3, setWeb3] = useState<Web3 | undefined>(undefined);
   const [contracts, setContracts] = useState<Contracts | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
@@ -55,13 +57,13 @@ const ClassPoll: React.FC = () => {
 
       const contractAddress = "0xd6374c1A42464df6db7E4a34fc54Cb94FA1817E9";
       const ClassPoll = new web3Instance.eth.Contract(
-        contractJson.abi,
+        contractABI.abi,
         contractAddress
       ) as Contracts;
       ClassPoll.setProvider(window.ethereum);
       setContracts(ClassPoll);
 
-      // Fetch current poll after connection
+
       await fetchCurrentPoll();
     } catch (error) {
       console.error("Failed to initialize web3 or contract:", error);
@@ -165,6 +167,18 @@ const ClassPoll: React.FC = () => {
       return () => clearInterval(interval);
     }
   }, [isConnected, currentPoll]);
+
+
+  if (!isInitialized) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="text-center">
+          <h1 className="text-xl font-bold mb-4">Loading...</h1>
+          <p>Please wait while we initialize authentication.</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="App min-h-screen flex flex-col items-center justify-between">

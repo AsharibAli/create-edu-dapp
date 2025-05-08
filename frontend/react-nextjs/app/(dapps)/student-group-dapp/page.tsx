@@ -28,7 +28,7 @@ interface DecodedToken {
 const contractAddress = '0x82E7ADFe34DC795475582133Ffe91147f22e0c39'
 
 export default function StudyGroup() {
-  const { authState } = useOCAuth()
+  const { isInitialized, authState } = useOCAuth()
   const { toast } = useToast()
 
   const [web3, setWeb3] = useState<Web3 | null>(null)
@@ -39,6 +39,18 @@ export default function StudyGroup() {
   const [newMessage, setNewMessage] = useState<string>('')
   const [ocidUsername, setOcidUsername] = useState<string | null>(null)
   const [isConnected, setIsConnected] = useState<boolean>(false)
+
+
+  if (!isInitialized) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="text-center">
+          <h1 className="text-xl font-bold mb-4">Loading...</h1>
+          <p>Please wait while we initialize authentication.</p>
+        </div>
+      </div>
+    )
+  }
 
   useEffect(() => {
     if (authState.idToken) {
@@ -137,7 +149,7 @@ export default function StudyGroup() {
     }
   }
 
-  // Auto-refresh messages
+
   useEffect(() => {
     let interval: NodeJS.Timeout
     if (isConnected && contract) {
